@@ -4,5 +4,7 @@
     Menu,
     Game,
     Settings,
-    Shop
+    Shop,
+    PauseMenu,
+    DeathScreen
 }
