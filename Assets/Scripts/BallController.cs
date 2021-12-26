@@ -9,17 +9,25 @@ public class BallController : MonoBehaviour
     [SerializeField] private float jumpForce = 2f;
     
     private Rigidbody _rb;
+    private InputHandler _inputHandler;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
     }
-
-    private void Update()
+    public void Init(InputHandler inputHandler)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            _rb.AddForce(Vector3.up * jumpForce);
-        }
+        _inputHandler = inputHandler;
+        _inputHandler.touched += Jump;
+    }
+    private void OnDestroy()
+    {
+        if (_inputHandler != null) _inputHandler.touched -= Jump;
+    }
+    
+    public void Jump()
+    {
+        _rb.AddForce(Vector3.up * jumpForce);
     }
 
     private void OnTriggerEnter(Collider other)
