@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TriggerZone
-  m_Shader: {fileID: -6465566751694194690, guid: 1d66c7919216608479206a5e0c280b24, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -71,7 +75,10 @@ Material:
     - Vector1_09deee6cb6744b328bfd2abcff962c69: 0.9
     - Vector1_60dc8edd59904404808f00a144fb4a94: 0.5
     - Vector1_6ffd2c5a088949e484f8851720995538: 0.2
+    - _AlphaClip: 0
+    - _Blend: 0
     - _BumpScale: 1
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -82,14 +89,18 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Surface: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - Color_11880857df614dddb623acbf252cf53b: {r: 0.4528302, g: 0.35671058, b: 0.35671058, a: 0}
     - Color_95e62c2792604583a555f560f883471c: {r: 0, g: 0.43849897, b: 1, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.14886391, g: 0.3584906, b: 0.14035244, a: 1}
+    - _Color: {r: 0.11965258, g: 0.3207547, b: 0.10137059, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

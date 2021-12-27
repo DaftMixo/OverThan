@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _shop;
     [SerializeField] private GameObject _settings;
     [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _deathScreen;
 
     [SerializeField] private Button[] _buttons;
 
@@ -32,6 +33,7 @@ public class UIController : MonoBehaviour
             _game.SetActive(false);
             _settings.SetActive(false);
             _pauseMenu.SetActive(false);
+            _deathScreen.SetActive(false);
         }
         else if (gameState == GameState.Game)
         {
@@ -40,6 +42,7 @@ public class UIController : MonoBehaviour
             _game.SetActive(true);
             _settings.SetActive(false);
             _pauseMenu.SetActive(false);
+            _deathScreen.SetActive(false);
         }
         else if (gameState == GameState.PauseMenu)
         {
@@ -48,6 +51,7 @@ public class UIController : MonoBehaviour
             _game.SetActive(false);
             _settings.SetActive(false);
             _pauseMenu.SetActive(true);
+            _deathScreen.SetActive(false);
         }
         else if (gameState == GameState.Shop)
         {
@@ -56,6 +60,7 @@ public class UIController : MonoBehaviour
             _game.SetActive(false);
             _settings.SetActive(false);
             _pauseMenu.SetActive(false);
+            _deathScreen.SetActive(false);
         }
         else if (gameState == GameState.Settings)
         {
@@ -64,6 +69,16 @@ public class UIController : MonoBehaviour
             _game.SetActive(false);
             _settings.SetActive(true);
             _pauseMenu.SetActive(false);
+            _deathScreen.SetActive(false);
+        }
+        else if (gameState == GameState.Death)
+        {
+            _menu.SetActive(false);
+            _shop.SetActive(false);
+            _game.SetActive(false);
+            _settings.SetActive(false);
+            _pauseMenu.SetActive(false);
+            _deathScreen.SetActive(true);
         }
     }
 }

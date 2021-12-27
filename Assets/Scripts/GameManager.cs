@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,11 +11,10 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private GameObject topZone;
     [SerializeField] private GameObject bottomZone;
-
-    [SerializeField] private float pausePosition = 0f;
     
-    [SerializeField] private GameObject[] _gameObjects = new GameObject[3];
+    [SerializeField] private GameObject[] obstacles = new GameObject[3];
     
+    private float pausePosition = 0f;
     private InputHandler _inputHandler;
     private BallController _ballController;
     private Rigidbody _ballRigidbody;
@@ -72,7 +69,7 @@ public partial class GameManager : MonoBehaviour
         _inputHandler.touched += _ballController.Jump;
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
-        _gameObjects[0].SendMessage("Show");
+        obstacles[0].SendMessage("Show");
 
         _topStart = Random.Range(0, 2) == 1;
         _isActiveTop = !_topStart;
@@ -103,6 +100,7 @@ public partial class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
         _gameIsActive = false;
         _jumpDealy = .25f;
+        _ballController.SetFixedJump(true);
         
         if (!_isActiveTop)
         {
@@ -122,6 +120,21 @@ public partial class GameManager : MonoBehaviour
         _inputHandler.touched += _ballController.Jump;
     }
 
+    public void ExitToMenu()
+    {
+        _gameState = GameState.Menu;
+        _uiController.SetUI(_gameState);
+        _gameIsActive = false;
+        pausePosition = 0;
+
+        _inputHandler.touched -= _ballController.Jump;
+
+        foreach (var item in obstacles)
+        {
+            item.SendMessage("Hide");
+        }
+    }
+
     private void PlayGame()
     {
         if (_gameState == GameState.Game)
@@ -130,8 +143,18 @@ public partial class GameManager : MonoBehaviour
 
     private void Death()
     {
+        _gameState = GameState.Death;
+        _uiController.SetUI(_gameState);
         _gameScore = 0;
-        ball.transform.position = Vector3.zero;
+        _gameIsActive = false;
+        pausePosition = 0;
+
+        _inputHandler.touched -= _ballController.Jump;
+
+        foreach (var item in obstacles)
+        {
+            item.SendMessage("Hide");
+        }
     }
 
     private void PlayButtonSound()

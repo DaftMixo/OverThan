@@ -16,7 +16,27 @@ public class SlidingPanel : MonoBehaviour, IObjController
 
     public void Hide()
     {
+        if (isShown)
+            StartCoroutine(HidePanel());
         isShown = false;
+    }
+    
+    private IEnumerator HidePanel()
+    {
+        var outPose = new Vector3(-7, 0, 0);
+        while (transform.localPosition != outPose)
+        {
+            transform.localPosition = Vector3.Lerp(transform.position,
+                outPose, 
+                Time.deltaTime);
+            
+            if (transform.position.x < -6)
+                break;
+            
+            yield return null;
+        }
+        transform.position = new Vector3(7, 0, 0);
+        transform.rotation = new Quaternion(0, 0, 0, 0);
     }
 
     private void Update()

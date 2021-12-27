@@ -32,8 +32,9 @@ public class RotatingPanel : MonoBehaviour, IObjController
 
     public void Hide()
     {
+        if (isShown)
+            StartCoroutine(HidePanel());
         isShown = false;
-        StartCoroutine(HidePanel());
     }
     
     private IEnumerator HidePanel()

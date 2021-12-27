@@ -5,10 +5,16 @@ public class BallController : MonoBehaviour
 {
     public Action switchTriggerZone;
     public Action death;
+
+    public void SetFixedJump(bool value)
+    {
+        _fixedJump = value;
+    }
     
     [SerializeField] private float _jumpForce = 2f;
     
     private Rigidbody _rb;
+    private bool _fixedJump = true;
 
     private void Start()
     {
@@ -22,7 +28,15 @@ public class BallController : MonoBehaviour
     
     public void Jump(float jumpForce)
     {
-        _rb.AddForce(Vector3.up * jumpForce * _jumpForce);
+        if (_fixedJump)
+        {
+            _rb.velocity = new Vector3(0, 4, 0);
+            _fixedJump = false;
+        }
+        else
+        {
+            _rb.AddForce(Vector3.up * jumpForce * _jumpForce);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

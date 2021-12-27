@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DeathObject
-  m_Shader: {fileID: -6465566751694194690, guid: 1aafb7b9a9bf3bb4190a34975240d195, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c57f8f1e226fed045a28f51711630c57, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0

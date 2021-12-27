@@ -6,5 +6,5 @@
     Settings,
     Shop,
     PauseMenu,
-    DeathScreen
+    Death
 }
