@@ -8,6 +8,7 @@ public partial class GameManager : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private UIController _uiController;
     [SerializeField] private AudioFX _audioFx;
+    [SerializeField] private RewardedAdsButton _ads;
     
     [Header("Game objects")]
     [SerializeField] private GameObject ball;
@@ -29,8 +30,6 @@ public partial class GameManager : MonoBehaviour
     private int _maxScore = 0;
     private int _gameScore = 0;
     private float _jumpDealy = .25f;
-    
-    public int GetScore => _gameScore;
 
     private void Awake()
     {
@@ -50,6 +49,7 @@ public partial class GameManager : MonoBehaviour
         _ballController.death += Death;
         _inputHandler.touched += PlayGame;
         _uiController.OnButtonClick += PlayButtonSound;
+        _uiController.SetMenuScore(_maxScore);
         
         _gameState = GameState.Menu;
         _uiController.SetUI(_gameState);
@@ -123,9 +123,8 @@ public partial class GameManager : MonoBehaviour
     
     public void ContinueGameOnDeath()
     {
-        //TODO: Show reward ad
-        Debug.Log("Ad shown");
         StartGame();
+        _uiController.SetRewardedContinue(false);
     }
 
     public void ExitToMenu()
@@ -163,9 +162,12 @@ public partial class GameManager : MonoBehaviour
         _uiController.SetDeathScreenScore(_gameScore);
         _gameIsActive = false;
         pausePosition = 0;
+        _ads.LoadAd();
 
         if (_maxScore < _gameScore)
             _maxScore = _gameScore;
+        
+        _uiController.SetMenuScore(_maxScore);
 
         _ballController.SetFixedJump(true);
         _inputHandler.touched -= _ballController.Jump;

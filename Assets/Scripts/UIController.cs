@@ -17,8 +17,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _deathScreen;
 
     [Header("UI items")]
+    [SerializeField] private TMP_Text _menuScreenScore;
     [SerializeField] private TMP_Text _deathScreenScore;
-
+    
     [SerializeField] private UiButtons _uiButtons;
 
     private void Start()
@@ -26,11 +27,24 @@ public class UIController : MonoBehaviour
         _uiButtons.SetAudio(OnButtonClick);
     }
 
+    public void SetMenuScore(int value)
+    {
+        _menuScreenScore.text = $"Score: {value}";
+    }
+
     public void SetDeathScreenScore(int score)
     {
         _deathScreenScore.text = score.ToString();
     }
-    
+
+    public void SetRewardedContinue(bool value)
+    {
+        _uiButtons.deathContinue.gameObject.SetActive(true);
+        if (!value)
+        {
+            _uiButtons.deathContinue.gameObject.SetActive(false);
+        }
+    }
     
     private IEnumerator DeathScreenButtonDelay()
     {
