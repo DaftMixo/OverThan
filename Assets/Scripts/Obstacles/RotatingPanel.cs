@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingPanel : MonoBehaviour, IObjController
+public class RotatingPanel : MonoBehaviour, IObstacleController
 {
     
     private bool isShown;

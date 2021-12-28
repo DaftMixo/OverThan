@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlidingPanel : MonoBehaviour, IObjController
+public class SlidingPanel : MonoBehaviour, IObstacleController
 {
     [SerializeField] private float newPos = -2f;
 

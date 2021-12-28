@@ -5,9 +5,11 @@ public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Controllers")]
     [SerializeField] private UIController _uiController;
     [SerializeField] private AudioFX _audioFx;
     
+    [Header("Game objects")]
     [SerializeField] private GameObject ball;
     [SerializeField] private GameObject topZone;
     [SerializeField] private GameObject bottomZone;
@@ -23,7 +25,8 @@ public partial class GameManager : MonoBehaviour
     private bool _gameIsActive;
     private bool _jumpFlag;
     private bool _topStart;
-    
+
+    private int _maxScore = 0;
     private int _gameScore = 0;
     private float _jumpDealy = .25f;
     
@@ -92,8 +95,6 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    
-
     public void PauseGame()
     {
         _gameState = GameState.PauseMenu;
@@ -119,6 +120,13 @@ public partial class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
         _inputHandler.touched += _ballController.Jump;
     }
+    
+    public void ContinueGameOnDeath()
+    {
+        //TODO: Show reward ad
+        Debug.Log("Ad shown");
+        StartGame();
+    }
 
     public void ExitToMenu()
     {
@@ -126,6 +134,7 @@ public partial class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
         _gameIsActive = false;
         pausePosition = 0;
+        _gameScore = 0;
 
         _inputHandler.touched -= _ballController.Jump;
 
@@ -133,6 +142,12 @@ public partial class GameManager : MonoBehaviour
         {
             item.SendMessage("Hide");
         }
+    }
+
+    public void RestartGame()
+    {
+        _gameScore = 0;
+        StartGame();
     }
 
     private void PlayGame()
@@ -145,10 +160,14 @@ public partial class GameManager : MonoBehaviour
     {
         _gameState = GameState.Death;
         _uiController.SetUI(_gameState);
-        _gameScore = 0;
+        _uiController.SetDeathScreenScore(_gameScore);
         _gameIsActive = false;
         pausePosition = 0;
 
+        if (_maxScore < _gameScore)
+            _maxScore = _gameScore;
+
+        _ballController.SetFixedJump(true);
         _inputHandler.touched -= _ballController.Jump;
 
         foreach (var item in obstacles)

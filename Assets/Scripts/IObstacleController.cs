@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IObjController
+public interface IObstacleController
 {
     public void Show();
     public void Hide();

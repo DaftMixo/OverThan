@@ -9,4 +9,5 @@ public partial class GameManager
         yield return new WaitForSeconds(_jumpDealy);
         _jumpFlag = false;
     }
+
 }
