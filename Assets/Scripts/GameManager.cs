@@ -73,10 +73,16 @@ public partial class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        if(_gameState == GameState.Game)
+            return;
+        
         _inputHandler.touched += _ballController.Jump;
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
         obstacles[0].SendMessage("Show");
+        
+        _uiController.SetRewardedContinue(true);
+        
 
         _topStart = Random.Range(0, 2) == 1;
         _isActiveTop = !_topStart;
@@ -115,7 +121,8 @@ public partial class GameManager : MonoBehaviour
         {
             pausePosition = -2.5f;
         }
-        _inputHandler.touched -= _ballController.Jump;
+
+        if (_inputHandler.touched != null) _inputHandler.touched -= _ballController.Jump;
     }
 
     public void ContinueGame()
@@ -139,7 +146,7 @@ public partial class GameManager : MonoBehaviour
         pausePosition = 0;
         _gameScore = 0;
 
-        _inputHandler.touched -= _ballController.Jump;
+        if (_inputHandler.touched != null) _inputHandler.touched -= _ballController.Jump;
 
         foreach (var item in obstacles)
         {
@@ -175,7 +182,7 @@ public partial class GameManager : MonoBehaviour
         _uiController.SetMenuScore(_maxScore);
 
         _ballController.SetFixedJump(true);
-        _inputHandler.touched -= _ballController.Jump;
+        if (_inputHandler != null) _inputHandler.touched -= _ballController.Jump;
 
         foreach (var item in obstacles)
         {

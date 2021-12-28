@@ -5,6 +5,7 @@ public class InputHandler : MonoBehaviour
 {
     public Action touched;
 
+
     private void Update()
     {
 #if UNITY_EDITOR || UNITY_EDITOR_64
