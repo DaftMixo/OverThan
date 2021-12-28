@@ -16,6 +16,8 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] private GameObject bottomZone;
     
     [SerializeField] private GameObject[] obstacles = new GameObject[3];
+
+    private static string s_scoreKey = "MaxScore";
     
     private float pausePosition = 0f;
     private InputHandler _inputHandler;
@@ -44,6 +46,8 @@ public partial class GameManager : MonoBehaviour
         _audioFx = GetComponent<AudioFX>();
         _inputHandler = GetComponent<InputHandler>();
         _ballController = ball.GetComponent<BallController>();
+        
+        _maxScore = PlayerPrefsSafe.GetInt(s_scoreKey, 0);
         
         _ballController.switchTriggerZone += SwitchTriggerZone;
         _ballController.death += Death;
@@ -163,10 +167,11 @@ public partial class GameManager : MonoBehaviour
         _gameIsActive = false;
         pausePosition = 0;
         _ads.LoadAd();
-
+        
         if (_maxScore < _gameScore)
             _maxScore = _gameScore;
-        
+
+        PlayerPrefsSafe.SetInt(s_scoreKey, _maxScore);
         _uiController.SetMenuScore(_maxScore);
 
         _ballController.SetFixedJump(true);
