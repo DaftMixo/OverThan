@@ -1,14 +1,30 @@
+using System;
 using UnityEngine;
 
-public static class SaveManager
+public class SaveManager : MonoBehaviour
 {
-    public static void SaveData()
+    private const string DataKey = "GameData";
+    
+    public void SaveData(GameData data)
     {
-        
+        var jsonData = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString(DataKey, jsonData);
     }
 
-    public static void LoadData()
+    public GameData LoadData()
     {
+        if (!PlayerPrefs.HasKey(DataKey))
+            return new GameData();
         
+        var jsonData = PlayerPrefs.GetString(DataKey);
+        var _data = JsonUtility.FromJson<GameData>(jsonData);
+        return _data;
     }
+}
+
+[Serializable]
+public class GameData
+{
+    public bool IsFirstStart = true;
+    public int Score;
 }

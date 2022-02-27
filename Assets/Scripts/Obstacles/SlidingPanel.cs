@@ -17,7 +17,7 @@ public class SlidingPanel : Obstacle
     private void Start()
     {
         transform.localScale = _minimalScale;
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public override void Show()

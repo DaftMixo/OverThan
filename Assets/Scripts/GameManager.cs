@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public partial class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
@@ -19,7 +19,9 @@ public partial class GameManager : MonoBehaviour
 
     [SerializeField] private ObstaclesConfig _obstaclesConfig;
 
+    private SaveManager _saveManager;
     private Obstacle _activeObstacle;
+    private GameData _data;
 
     private static string s_scoreKey = "MaxScore";
     
@@ -46,12 +48,15 @@ public partial class GameManager : MonoBehaviour
     
     private void Start()
     {
+        _saveManager = GetComponent<SaveManager>();
         _ballRigidbody = ball.GetComponent<Rigidbody>();
         _audioFx = GetComponent<AudioFX>();
         _inputHandler = GetComponent<InputHandler>();
         _ballController = ball.GetComponent<BallController>();
-        
-        _maxScore = PlayerPrefsSafe.GetInt(s_scoreKey, 0);
+
+        _data = _saveManager.LoadData();
+
+        _maxScore = _data.Score;
         
         _ballController.switchTriggerZone += SwitchTriggerZone;
         _ballController.death += Death;
@@ -68,7 +73,7 @@ public partial class GameManager : MonoBehaviour
         if (!_gameIsActive && ball.transform.position.y <= pausePosition && !_jumpFlag)
         {
             _jumpFlag = true;
-            StartCoroutine(DelayedJump());
+            DelayedJump();
         }
         
         if (!_gameIsActive && ball.transform.position.y > pausePosition + 1 && _ballRigidbody.velocity.y > 0)
@@ -111,6 +116,7 @@ public partial class GameManager : MonoBehaviour
 
         await UniTask.Delay(TimeSpan.FromSeconds(2f));
         
+        _activeObstacle.gameObject.SetActive(true);
         _activeObstacle.Show();
     }
 
@@ -184,7 +190,8 @@ public partial class GameManager : MonoBehaviour
         if (_maxScore < _gameScore)
             _maxScore = _gameScore;
 
-        PlayerPrefsSafe.SetInt(s_scoreKey, _maxScore);
+        _data.Score = _maxScore;
+        _saveManager.SaveData(_data);
         _uiController.SetMenuScore(_maxScore);
 
         _ballController.SetFixedJump(true);
@@ -213,5 +220,11 @@ public partial class GameManager : MonoBehaviour
             bottomZone.SetActive(false);
             topZone.SetActive(true);
         }
+    }
+    private async void DelayedJump()
+    {
+        _ballRigidbody.velocity = new Vector3(0, 4, 0);
+        await UniTask.Delay(TimeSpan.FromSeconds(_jumpDealy));
+        _jumpFlag = false;
     }
 }
