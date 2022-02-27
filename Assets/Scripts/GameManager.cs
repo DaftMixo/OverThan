@@ -1,3 +1,5 @@
+using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,8 +16,10 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private GameObject topZone;
     [SerializeField] private GameObject bottomZone;
-    
-    [SerializeField] private GameObject[] obstacles = new GameObject[3];
+
+    [SerializeField] private ObstaclesConfig _obstaclesConfig;
+
+    private Obstacle _activeObstacle;
 
     private static string s_scoreKey = "MaxScore";
     
@@ -71,16 +75,17 @@ public partial class GameManager : MonoBehaviour
             _ballRigidbody.velocity = Vector3.zero;
     }
 
-    public void StartGame()
+    public async void StartGame()
     {
         if(_gameState == GameState.Game)
             return;
+
+        _activeObstacle = Instantiate(_obstaclesConfig.GetRandomObstacle(), transform);
         
         _inputHandler.touched += _ballController.Jump;
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
-        obstacles[0].SendMessage("Show");
-        
+
         _uiController.SetRewardedContinue(true);
         
 
@@ -103,6 +108,10 @@ public partial class GameManager : MonoBehaviour
             bottomZone.SetActive(false);
             topZone.SetActive(true);
         }
+
+        await UniTask.Delay(TimeSpan.FromSeconds(2f));
+        
+        _activeObstacle.Show();
     }
 
     public void PauseGame()
@@ -148,10 +157,7 @@ public partial class GameManager : MonoBehaviour
 
         if (_inputHandler.touched != null) _inputHandler.touched -= _ballController.Jump;
 
-        foreach (var item in obstacles)
-        {
-            item.SendMessage("Hide");
-        }
+        _activeObstacle.Hide();
     }
 
     public void RestartGame()
@@ -184,10 +190,7 @@ public partial class GameManager : MonoBehaviour
         _ballController.SetFixedJump(true);
         if (_inputHandler != null) _inputHandler.touched -= _ballController.Jump;
 
-        foreach (var item in obstacles)
-        {
-            item.SendMessage("Hide");
-        }
+        _activeObstacle.Hide();
     }
 
     private void PlayButtonSound()

@@ -2,53 +2,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
-public class SlidingPanel : MonoBehaviour, IObstacleController
+public class SlidingPanel : Obstacle
 {
-    [SerializeField] private float newPos = -2f;
+    [SerializeField] private float _scalingTime = 1f;
 
-    private bool isShown;
+    private Vector3 _rightPosition = Vector3.right * 3f;
+    private Vector3 _minimalScale = Vector3.zero;
+    private Vector3 _normalScale = Vector3.one;
+    private bool _isShown;
 
-    public void Show()
+
+    private void Start()
     {
-        isShown = true;
+        transform.localScale = _minimalScale;
+        //gameObject.SetActive(false);
     }
 
-    public void Hide()
+    public override void Show()
     {
-        if (isShown)
-            StartCoroutine(HidePanel());
-        isShown = false;
-    }
-    
-    private IEnumerator HidePanel()
-    {
-        var outPose = new Vector3(-7, 0, 0);
-        while (transform.localPosition != outPose)
+        gameObject.SetActive(true);
+        transform.DOScale(_normalScale, _scalingTime).OnComplete(() =>
         {
-            transform.localPosition = Vector3.Lerp(transform.position,
-                outPose, 
-                Time.deltaTime);
-            
-            if (transform.position.x < -6)
-                break;
-            
-            yield return null;
-        }
-        transform.position = new Vector3(7, 0, 0);
-        transform.rotation = new Quaternion(0, 0, 0, 0);
+            _isShown = true;
+            MoveRight();
+        });
     }
 
-    private void Update()
+    public override void Hide()
     {
-        if(!isShown)
+        if (!_isShown)
             return;
-        if (transform.position.x > 1.9 || transform.position.x < -1.9)
-            newPos = -newPos;
-            
-        var nextPos = new Vector3(newPos, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position,
-                                            nextPos,
-                                            Time.deltaTime);
+        
+        transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
+        _isShown = false;
+        
     }
+
+    private void MoveRight()
+    {
+        transform.DOMove(_rightPosition, _scalingTime).OnComplete(() => MoveLeft());
+    }
+
+    private void MoveLeft()
+    {
+        transform.DOMove(-_rightPosition, _scalingTime).OnComplete(() => MoveRight());
+    }
+
 }

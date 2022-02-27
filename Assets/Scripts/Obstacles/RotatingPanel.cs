@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingPanel : MonoBehaviour, IObstacleController
+public class RotatingPanel : Obstacle
 {
     
     private bool isShown;
     
-    public void Show()
+    public override void Show()
     {
         isShown = true;
         StartCoroutine(ShowPanel());
@@ -30,7 +30,7 @@ public class RotatingPanel : MonoBehaviour, IObstacleController
         Hide();
     }
 
-    public void Hide()
+    public override void Hide()
     {
         if (isShown)
             StartCoroutine(HidePanel());
