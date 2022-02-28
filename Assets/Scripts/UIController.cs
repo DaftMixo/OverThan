@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,23 +11,36 @@ public class UIController : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _game;
-    [SerializeField] private GameObject _shop;
+    [SerializeField] private GameObject _gallery;
     [SerializeField] private GameObject _settings;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _deathScreen;
 
-    [Header("UI items")]
+    [Header("UI items")] 
+    [SerializeField] private TMP_Text _startMenuLable;
     [SerializeField] private TMP_Text _menuScreenScore;
     [SerializeField] private TMP_Text _deathScreenScore;
     
-    [SerializeField] private UiButtons _uiButtons;
+    [SerializeField] private UiButtons[] _uiButtons;
 
     private void Start()
     {
-        _uiButtons.SetAudio(OnButtonClick);
+        foreach (var button in _uiButtons)
+        {
+            button.SetAudio(OnButtonClick);
+        }
     }
 
-    public void SetMenuScore(int value)
+    public void UpdateMenu(int score, int lastScore)
+    {
+        SetMenuScore(score);
+        
+        _startMenuLable.text = "START";
+        if (lastScore != 0)
+            _startMenuLable.text = "CONTINUE";
+    }
+
+    private void SetMenuScore(int value)
     {
         _menuScreenScore.text = $"Score: {value}";
     }
@@ -39,105 +52,83 @@ public class UIController : MonoBehaviour
 
     public void SetRewardedContinue(bool value)
     {
-        _uiButtons.deathContinue.gameObject.SetActive(true);
-        if (!value)
+        foreach (var button in _uiButtons)
         {
-            _uiButtons.deathContinue.gameObject.SetActive(false);
+            if (button.Key == "Continue_death") button.Button.gameObject.SetActive(value);
         }
     }
     
-    private IEnumerator DeathScreenButtonDelay()
+    private async void DeathScreenButtonDelay()
     {
-        _uiButtons.deathRestart.interactable = false;
-        _uiButtons.deathExit.interactable = false;
-        yield return new WaitForSeconds(3f);
-        _uiButtons.deathRestart.interactable = true;
-        _uiButtons.deathExit.interactable = true;
+        foreach (var button in _uiButtons)
+        {
+            if (button.Key == "Restart_death") button.Button.interactable = false;
+            if (button.Key == "Exit_death") button.Button.interactable = false;
+        }
+        await UniTask.Delay(TimeSpan.FromSeconds(2));
+        foreach (var button in _uiButtons)
+        {
+            if (button.Key == "Restart_death") button.Button.interactable = true;
+            if (button.Key == "Exit_death") button.Button.interactable = true;
+        }
 
     }
 
     public void SetUI(GameState gameState)
     {
-        if (gameState == GameState.Menu)
+        _menu.SetActive(false);
+        _gallery.SetActive(false);
+        _game.SetActive(false);
+        _settings.SetActive(false);
+        _pauseMenu.SetActive(false);
+        _deathScreen.SetActive(false);
+        
+        switch (gameState)
         {
-            _menu.SetActive(true);
-            _shop.SetActive(false);
-            _game.SetActive(false);
-            _settings.SetActive(false);
-            _pauseMenu.SetActive(false);
-            _deathScreen.SetActive(false);
+            case GameState.Menu :
+                _menu.SetActive(true);
+                break;
+            case GameState.Game :
+                _game.SetActive(true);
+                break;
+            case GameState.PauseMenu :
+                _pauseMenu.SetActive(true);
+                break;
+            case GameState.Shop :
+                _gallery.SetActive(true);
+                break;
+            case GameState.Settings :
+                _settings.SetActive(true);
+                break;
+            case GameState.Death :
+                _deathScreen.SetActive(true);
+                DeathScreenButtonDelay();
+                break;
         }
-        else if (gameState == GameState.Game)
+        
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var button in _uiButtons)
         {
-            _menu.SetActive(false);
-            _shop.SetActive(false);
-            _game.SetActive(true);
-            _settings.SetActive(false);
-            _pauseMenu.SetActive(false);
-            _deathScreen.SetActive(false);
-        }
-        else if (gameState == GameState.PauseMenu)
-        {
-            _menu.SetActive(false);
-            _shop.SetActive(false);
-            _game.SetActive(false);
-            _settings.SetActive(false);
-            _pauseMenu.SetActive(true);
-            _deathScreen.SetActive(false);
-        }
-        else if (gameState == GameState.Shop)
-        {
-            _menu.SetActive(false);
-            _shop.SetActive(true);
-            _game.SetActive(false);
-            _settings.SetActive(false);
-            _pauseMenu.SetActive(false);
-            _deathScreen.SetActive(false);
-        }
-        else if (gameState == GameState.Settings)
-        {
-            _menu.SetActive(false);
-            _shop.SetActive(false);
-            _game.SetActive(false);
-            _settings.SetActive(true);
-            _pauseMenu.SetActive(false);
-            _deathScreen.SetActive(false);
-        }
-        else if (gameState == GameState.Death)
-        {
-            _menu.SetActive(false);
-            _shop.SetActive(false);
-            _game.SetActive(false);
-            _settings.SetActive(false);
-            _pauseMenu.SetActive(false);
-            _deathScreen.SetActive(true);
-            StartCoroutine(DeathScreenButtonDelay());
+            button.OnDestroy();
         }
     }
-    
+
     [Serializable] public class UiButtons
     {
-        public Button play;
-        public Button shop;
-        public Button settings;
-        public Button pause;
-        public Button pauseContinue;
-        public Button pauseExit;
-        public Button deathContinue;
-        public Button deathRestart;
-        public Button deathExit;
+        public string Key;
+        public Button Button;
 
         public void SetAudio(Action action)
         {
-            play.onClick.AddListener(action.Invoke);
-            shop.onClick.AddListener(action.Invoke);
-            settings.onClick.AddListener(action.Invoke);
-            pause.onClick.AddListener(action.Invoke);
-            pauseContinue.onClick.AddListener(action.Invoke);
-            pauseExit.onClick.AddListener(action.Invoke);
-            deathContinue.onClick.AddListener(action.Invoke);
-            deathRestart.onClick.AddListener(action.Invoke);
-            deathExit.onClick.AddListener(action.Invoke);
+            Button.onClick.AddListener(action.Invoke);
+        }
+
+        public void OnDestroy()
+        {
+            Button.onClick.RemoveAllListeners();
         }
     }
 }

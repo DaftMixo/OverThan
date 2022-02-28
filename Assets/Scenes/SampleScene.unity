@@ -834,7 +834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 144110607}
   m_Layer: 5
-  m_Name: Shop
+  m_Name: Gallery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2133,7 +2133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 4528959
   _iOSGameId: 4528958
-  _testMode: 1
+  _testMode: 0
 --- !u!4 &809620717
 Transform:
   m_ObjectHideFlags: 0
@@ -4012,22 +4012,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _menu: {fileID: 792839285}
   _game: {fileID: 405411752}
-  _shop: {fileID: 144110606}
+  _gallery: {fileID: 144110606}
   _settings: {fileID: 155406703}
   _pauseMenu: {fileID: 1943427755}
   _deathScreen: {fileID: 1861015260}
+  _startMenuLable: {fileID: 674076508}
   _menuScreenScore: {fileID: 192559588}
   _deathScreenScore: {fileID: 611137672}
   _uiButtons:
-    play: {fileID: 740241279}
-    shop: {fileID: 2138730978}
-    settings: {fileID: 46235297}
-    pause: {fileID: 1009200806}
-    pauseContinue: {fileID: 1500344050}
-    pauseExit: {fileID: 2123213801}
-    deathContinue: {fileID: 39885439}
-    deathRestart: {fileID: 1720873817}
-    deathExit: {fileID: 60220993}
+  - Key: Play
+    Button: {fileID: 740241279}
+  - Key: Gallery
+    Button: {fileID: 2138730978}
+  - Key: Settings
+    Button: {fileID: 46235297}
+  - Key: Pause
+    Button: {fileID: 1009200806}
+  - Key: Continue_pause
+    Button: {fileID: 1500344050}
+  - Key: Exit_pause
+    Button: {fileID: 2123213801}
+  - Key: Continue_death
+    Button: {fileID: 39885439}
+  - Key: Restart_death
+    Button: {fileID: 1720873817}
+  - Key: Exit_death
+    Button: {fileID: 60220993}
 --- !u!1 &1720873813
 GameObject:
   m_ObjectHideFlags: 0
@@ -4255,7 +4265,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SHOP
+  m_text: GALLERY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
@@ -4514,7 +4524,7 @@ GameObject:
   - component: {fileID: 2138730979}
   - component: {fileID: 2138730978}
   m_Layer: 5
-  m_Name: Shop
+  m_Name: Gallery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

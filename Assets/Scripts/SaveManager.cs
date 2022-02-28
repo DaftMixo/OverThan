@@ -27,4 +27,5 @@ public class GameData
 {
     public bool IsFirstStart = true;
     public int Score;
+    public int LastScore;
 }

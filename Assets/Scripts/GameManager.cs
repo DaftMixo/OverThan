@@ -16,15 +16,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private GameObject topZone;
     [SerializeField] private GameObject bottomZone;
-
+    
+    [Header("Configs")]
     [SerializeField] private ObstaclesConfig _obstaclesConfig;
 
     private SaveManager _saveManager;
     private Obstacle _activeObstacle;
     private GameData _data;
 
-    private static string s_scoreKey = "MaxScore";
-    
     private float pausePosition = 0f;
     private InputHandler _inputHandler;
     private BallController _ballController;
@@ -35,14 +34,16 @@ public class GameManager : MonoBehaviour
     private bool _jumpFlag;
     private bool _topStart;
 
-    private int _maxScore = 0;
     private int _gameScore = 0;
     private float _jumpDealy = .25f;
 
     private void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(gameObject);
             return;
+        }
         Instance = this;
     }
     
@@ -54,15 +55,19 @@ public class GameManager : MonoBehaviour
         _inputHandler = GetComponent<InputHandler>();
         _ballController = ball.GetComponent<BallController>();
 
-        _data = _saveManager.LoadData();
-
-        _maxScore = _data.Score;
+        _ballController.Interactable = false;
         
+        _data = _saveManager.LoadData();
+        _gameScore = _data.LastScore;
+
         _ballController.switchTriggerZone += SwitchTriggerZone;
         _ballController.death += Death;
         _inputHandler.touched += PlayGame;
         _uiController.OnButtonClick += PlayButtonSound;
-        _uiController.SetMenuScore(_maxScore);
+        
+        _uiController.UpdateMenu(_data.Score, _data.LastScore);
+
+        Debug.Log(_data.LastScore);
         
         _gameState = GameState.Menu;
         _uiController.SetUI(_gameState);
@@ -114,8 +119,9 @@ public class GameManager : MonoBehaviour
             topZone.SetActive(true);
         }
 
-        await UniTask.Delay(TimeSpan.FromSeconds(2f));
-        
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
+
+        _ballController.Interactable = true;
         _activeObstacle.gameObject.SetActive(true);
         _activeObstacle.Show();
     }
@@ -127,6 +133,8 @@ public class GameManager : MonoBehaviour
         _gameIsActive = false;
         _jumpDealy = .25f;
         _ballController.SetFixedJump(true);
+        
+        _ballController.Interactable = false;
         
         if (!_isActiveTop)
         {
@@ -144,6 +152,8 @@ public class GameManager : MonoBehaviour
     {
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
+        
+        _ballController.Interactable = true;
         _inputHandler.touched += _ballController.Jump;
     }
     
@@ -160,6 +170,9 @@ public class GameManager : MonoBehaviour
         _gameIsActive = false;
         pausePosition = 0;
         _gameScore = 0;
+        
+        
+        _ballController.Interactable = false;
 
         if (_inputHandler.touched != null) _inputHandler.touched -= _ballController.Jump;
 
@@ -187,16 +200,19 @@ public class GameManager : MonoBehaviour
         pausePosition = 0;
         _ads.LoadAd();
         
-        if (_maxScore < _gameScore)
-            _maxScore = _gameScore;
+        if (_data.Score < _gameScore)
+            _data.Score = _gameScore;
 
-        _data.Score = _maxScore;
+        _gameScore = 0;
+        _data.LastScore = 0;
         _saveManager.SaveData(_data);
-        _uiController.SetMenuScore(_maxScore);
+        
+        _uiController.UpdateMenu(_data.Score, _data.LastScore);
 
         _ballController.SetFixedJump(true);
         if (_inputHandler != null) _inputHandler.touched -= _ballController.Jump;
 
+        _ballController.Interactable = false;
         _activeObstacle.Hide();
     }
 
@@ -226,5 +242,27 @@ public class GameManager : MonoBehaviour
         _ballRigidbody.velocity = new Vector3(0, 4, 0);
         await UniTask.Delay(TimeSpan.FromSeconds(_jumpDealy));
         _jumpFlag = false;
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            Debug.Log("LostFocus");
+            _data.LastScore = _gameScore;
+            _saveManager.SaveData(_data);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_ballController != null)
+        {
+            _ballController.switchTriggerZone -= SwitchTriggerZone;
+            _ballController.death -= Death;
+        }
+        
+        if (_inputHandler != null) _inputHandler.touched -= PlayGame;
+        if (_uiController.OnButtonClick != null) _uiController.OnButtonClick -= PlayButtonSound;
     }
 }

@@ -6,6 +6,14 @@ public class BallController : MonoBehaviour
     public Action switchTriggerZone;
     public Action death;
 
+    private bool _isInteractable = false;
+
+    public bool Interactable
+    {
+        get { return _isInteractable; }
+        set { _isInteractable = value; }
+    }
+
     public void SetFixedJump(bool value)
     {
         _fixedJump = value;
@@ -41,6 +49,9 @@ public class BallController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!_isInteractable)
+            return;
+        
         if (other.CompareTag("TriggerZone"))
         {
             switchTriggerZone.Invoke();

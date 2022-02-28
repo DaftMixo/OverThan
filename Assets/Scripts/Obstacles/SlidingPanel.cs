@@ -23,9 +23,9 @@ public class SlidingPanel : Obstacle
     public override void Show()
     {
         gameObject.SetActive(true);
+        _isShown = true;
         transform.DOScale(_normalScale, _scalingTime).OnComplete(() =>
         {
-            _isShown = true;
             MoveRight();
         });
     }
@@ -34,7 +34,6 @@ public class SlidingPanel : Obstacle
     {
         if (!_isShown)
             return;
-        
         transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
         _isShown = false;
         
