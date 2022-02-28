@@ -1,17 +1,23 @@
 using System;
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public Action switchTriggerZone;
     public Action death;
 
     private bool _isInteractable = false;
+    private MeshFilter _meshFilter;
 
     public bool Interactable
     {
         get { return _isInteractable; }
         set { _isInteractable = value; }
+    }
+
+    public void SetModel(Mesh mesh)
+    {
+        _meshFilter.mesh = mesh;
     }
 
     public void SetFixedJump(bool value)
@@ -26,6 +32,7 @@ public class BallController : MonoBehaviour
 
     private void Start()
     {
+        _meshFilter = GetComponent<MeshFilter>();
         _rb = GetComponent<Rigidbody>();
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ObstaclesConfig", menuName = "Configs/ObstaclesConfig", order = 0)]
 public class ObstaclesConfig : ScriptableObject
 {
-    public Obstacle[] _obstacles;
+    [SerializeField] private Obstacle[] _obstacles;
 
     public Obstacle GetRandomObstacle()
     {

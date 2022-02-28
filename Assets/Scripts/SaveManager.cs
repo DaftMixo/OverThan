@@ -28,4 +28,14 @@ public class GameData
     public bool IsFirstStart = true;
     public int Score;
     public int LastScore;
+
+    public int PlayerIndex;
+
+    [Serializable]
+    public class Model
+    {
+        public string Key;
+        public Mesh Mesh;
+        public bool IsUnlocked;
+    }
 }
