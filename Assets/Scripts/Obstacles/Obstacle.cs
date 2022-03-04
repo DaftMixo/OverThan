@@ -1,14 +1,8 @@
 ﻿using UnityEngine;
 
-public abstract class Obstacle : MonoBehaviour, IObstacleController
+public abstract class Obstacle : MonoBehaviour
 {
-    public virtual void Show()
-    {
-        Debug.LogError("Override Show method in obstacles");
-    }
-
-    public virtual void Hide()
-    {
-        Debug.LogError("Override Hide method in obstacles");
-    }
+    public abstract string Key { get; }
+    public abstract void Show();
+    public abstract void Hide();
 }

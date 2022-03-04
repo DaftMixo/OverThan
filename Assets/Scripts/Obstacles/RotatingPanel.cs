@@ -1,63 +1,45 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class RotatingPanel : Obstacle
 {
+    public override string Key { get; } = "RotatingPanel";
+
+    [SerializeField] private float _scalingTime = 1f;
     
-    private bool isShown;
+    private bool _isShown;
+    private Vector3 _minimalScale = Vector3.zero;
+    private Vector3 _normalScale = Vector3.one;
+
+    private void Start()
+    {
+        transform.localScale = _minimalScale;
+        gameObject.SetActive(false);
+    }
     
     public override void Show()
     {
-        isShown = true;
-        StartCoroutine(ShowPanel());
-    }
-
-    private IEnumerator ShowPanel()
-    {
-        while (transform.localPosition != Vector3.zero)
-        {
-            transform.localPosition = Vector3.Lerp(transform.position,
-                Vector3.zero, 
-                Time.deltaTime);
-
-            if (transform.localPosition.x < 0.01)
-                break;
-            
-            yield return null;
-        }
-        Hide();
+        gameObject.SetActive(true);
+        _isShown = true;
+        transform.DOScale(_normalScale, _scalingTime);
     }
 
     public override void Hide()
     {
-        if (isShown)
-            StartCoroutine(HidePanel());
-        isShown = false;
-    }
-    
-    private IEnumerator HidePanel()
-    {
-        var outPose = new Vector3(-7, 0, 0);
-        while (transform.localPosition != outPose)
-        {
-            transform.localPosition = Vector3.Lerp(transform.position,
-                outPose, 
-                Time.deltaTime);
-            
-            if (transform.position.x < -6)
-                break;
-            
-            yield return null;
-        }
-        transform.position = new Vector3(7, 0, 0);
-        transform.rotation = new Quaternion(0, 0, 0, 0);
+        if (!_isShown)
+            return;
+        transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
+        _isShown = false;
+        
     }
 
     private void Update()
     {
-        if(!isShown)
+        if(!_isShown)
             return;
         transform.Rotate(0, 0, -1);
     }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -6,13 +8,18 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public event Action<GameData> OnDataUpdate;
+    
+    [HideInInspector] public float jumpDealy = .25f;
+    [HideInInspector] public bool gameIsActive;
+    [HideInInspector] public float pausePosition = 0f;
 
+    
     [Header("Controllers")]
     [SerializeField] private UIController _uiController;
     [SerializeField] private AudioFX _audioFx;
     [SerializeField] private RewardedAdsButton _ads;
+    [SerializeField] private Settings _settings;
     
     [Header("Game objects")]
     [SerializeField] private GameObject player;
@@ -23,24 +30,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ObstaclesConfig _obstaclesConfig;
     [SerializeField] private PlayerModelsConfig _playerModelsConfig;
 
+    [Header("Gameplay settings")] 
+    [SerializeField] private float timerValue = 5;
+
+    private float timer;
+
     private GalleryController _gallery;
     private SaveManager _saveManager;
     private Obstacle _activeObstacle;
     private GameData _data;
 
-    private float pausePosition = 0f;
     private InputHandler _inputHandler;
     private PlayerController _playerController;
-    private Rigidbody _ballRigidbody;
     private bool _isActiveTop = true; //flag for trigger zone
     private GameState _gameState = GameState.Unknown;
-    private bool _gameIsActive;
-    private bool _jumpFlag;
     private bool _topStart;
 
     private int _scoreToRewardedContinue;
     private int _gameScore = 0;
-    private float _jumpDealy = .25f;
+
+    private List<Obstacle> _spawnedObstacles = new List<Obstacle>();
 
     private void Awake()
     {
@@ -63,7 +72,6 @@ public class GameManager : MonoBehaviour
     {
         OnDataUpdate?.Invoke(_data);
         
-        _ballRigidbody = player.GetComponent<Rigidbody>();
         _audioFx = GetComponent<AudioFX>();
         _inputHandler = GetComponent<InputHandler>();
         _playerController = player.GetComponent<PlayerController>();
@@ -80,24 +88,8 @@ public class GameManager : MonoBehaviour
 
         _gameState = GameState.Menu;
         _uiController.SetUI(_gameState);
-    }
 
-    private void Update()
-    {
-        if (!_gameIsActive && player.transform.position.y <= pausePosition && !_jumpFlag)
-        {
-            _jumpFlag = true;
-            DelayedJump();
-        }
-        
-        if (!_gameIsActive && player.transform.position.y > pausePosition + 1 && _ballRigidbody.velocity.y > 0)
-            _ballRigidbody.velocity = Vector3.zero;
-    }
-    private async void DelayedJump()
-    {
-        _ballRigidbody.velocity = new Vector3(0, 4, 0);
-        await UniTask.Delay(TimeSpan.FromSeconds(_jumpDealy));
-        _jumpFlag = false;
+        timer = timerValue;
     }
 
     public async void StartGame()
@@ -105,8 +97,13 @@ public class GameManager : MonoBehaviour
         if(_gameState == GameState.Game)
             return;
 
-        _activeObstacle = Instantiate(_obstaclesConfig.GetRandomObstacle(), transform);
+        foreach (Obstacle obstacle in _spawnedObstacles)
+        {
+            Destroy(obstacle.gameObject);
+        }
         
+        _spawnedObstacles.Clear();
+
         _inputHandler.touched += _playerController.Jump;
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
@@ -119,7 +116,7 @@ public class GameManager : MonoBehaviour
         if (_topStart)
         {
             pausePosition = 2.5f;
-            _jumpDealy = .4f;
+            jumpDealy = .4f;
             
             bottomZone.SetActive(true);
             topZone.SetActive(false);
@@ -127,25 +124,66 @@ public class GameManager : MonoBehaviour
         else
         {
             pausePosition = -2.5f;
-            _jumpDealy = .25f;
+            jumpDealy = .25f;
             
             bottomZone.SetActive(false);
             topZone.SetActive(true);
         }
 
         await UniTask.Delay(TimeSpan.FromSeconds(1f));
-
+        NextObstacle();
         _playerController.Interactable = true;
+    }
+
+    private async void NextObstacle()
+    {
+        if(_gameState != GameState.Game)
+            return;
+
+        var newObstacle = _obstaclesConfig.GetRandomObstacle();
+        
+        if (_activeObstacle != null)
+        {
+            while (timer > 0)
+            {
+                timer -= 1;
+                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+            }
+            while (_activeObstacle.Key == newObstacle.Key)
+            {
+                newObstacle = _obstaclesConfig.GetRandomObstacle();
+            }
+            
+            _activeObstacle.Hide();
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        }
+
+        if (_spawnedObstacles.Exists(x => x.Key == newObstacle.Key))
+        {
+            _activeObstacle = _spawnedObstacles.Find(x => x.Key == newObstacle.Key);
+        }
+        else
+        {
+            _activeObstacle = Instantiate(newObstacle, transform);
+            _spawnedObstacles.Add(_activeObstacle);
+        }
+        
+        if(_gameState != GameState.Game)
+            return;
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(.5f));
         _activeObstacle.gameObject.SetActive(true);
         _activeObstacle.Show();
+        timer = timerValue;
+        NextObstacle();
     }
 
     public void PauseGame()
     {
         _gameState = GameState.PauseMenu;
         _uiController.SetUI(_gameState);
-        _gameIsActive = false;
-        _jumpDealy = .25f;
+        gameIsActive = false;
+        jumpDealy = .25f;
         _playerController.SetFixedJump(true);
         
         _playerController.Interactable = false;
@@ -182,15 +220,30 @@ public class GameManager : MonoBehaviour
     {
         _gameState = GameState.Menu;
         _uiController.SetUI(_gameState);
-        _gameIsActive = false;
+        gameIsActive = false;
         pausePosition = 0;
         _gameScore = 0;
 
         _playerController.Interactable = false;
 
         if (_inputHandler.touched != null) _inputHandler.touched -= _playerController.Jump;
+        
+        bottomZone.SetActive(true);
+        topZone.SetActive(true);
 
-        _activeObstacle.Hide();
+        _activeObstacle?.Hide();
+    }
+
+    public void ShowGallery()
+    {
+        _gameState = GameState.Shop;
+        _uiController.SetUI(_gameState);
+    }
+    
+    public void ShowSettings()
+    {
+        _gameState = GameState.Settings;
+        _uiController.SetUI(_gameState);
     }
 
     public void RestartGame()
@@ -203,7 +256,7 @@ public class GameManager : MonoBehaviour
     private void PlayGame()
     {
         if (_gameState == GameState.Game)
-            _gameIsActive = true;
+            gameIsActive = true;
     }
 
     private void Death()
@@ -211,7 +264,7 @@ public class GameManager : MonoBehaviour
         _gameState = GameState.Death;
         _uiController.SetUI(_gameState);
         _uiController.SetDeathScreenScore(_gameScore);
-        _gameIsActive = false;
+        gameIsActive = false;
         pausePosition = 0;
         _ads.LoadAd();
         
@@ -230,7 +283,7 @@ public class GameManager : MonoBehaviour
         if (_inputHandler != null) _inputHandler.touched -= _playerController.Jump;
 
         _playerController.Interactable = false;
-        _activeObstacle.Hide();
+        _activeObstacle?.Hide();
     }
 
     private void PlayButtonSound()

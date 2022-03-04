@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1550255437441864532}
   - component: {fileID: 1550255437441864523}
   - component: {fileID: 1550255437441864534}
+  - component: {fileID: 6909556146289268777}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,6 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77801cea856095a4db6f1f88541b059d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpDealy: 0.25
+  gameIsActive: 0
+  pausePosition: 0
   _uiController: {fileID: 0}
   _audioFx: {fileID: 1550255437441864532}
   _ads: {fileID: 0}
@@ -56,6 +60,7 @@ MonoBehaviour:
   bottomZone: {fileID: 0}
   _obstaclesConfig: {fileID: 11400000, guid: f6488024f7c93ac46905a57a942fd7f7, type: 2}
   _playerModelsConfig: {fileID: 11400000, guid: c38864659cabe2c47b52177531d9ed09, type: 2}
+  timerValue: 5
 --- !u!114 &1550255437441864533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,5 +208,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bca2ffd8c31230f4a84efca3c9ca660f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6909556146289268777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550255437441864527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f362065cdeb4da4e9004d9a2471258b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

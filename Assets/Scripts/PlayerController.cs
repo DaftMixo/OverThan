@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private bool _isInteractable = false;
     private MeshFilter _meshFilter;
+    private bool _jumpFlag;
 
     public bool Interactable
     {
@@ -34,6 +36,24 @@ public class PlayerController : MonoBehaviour
     {
         _meshFilter = GetComponent<MeshFilter>();
         _rb = GetComponent<Rigidbody>();
+    }
+    
+    private void Update()
+    {
+        if (!GameManager.Instance.gameIsActive && transform.position.y <= GameManager.Instance.pausePosition && !_jumpFlag)
+        {
+            _jumpFlag = true;
+            DelayedJump();
+        }
+        
+        if (!GameManager.Instance.gameIsActive && transform.position.y > GameManager.Instance.pausePosition + 1 && _rb.velocity.y > 0)
+            _rb.velocity = Vector3.zero;
+    }
+    private async void DelayedJump()
+    {
+        _rb.velocity = new Vector3(0, 4, 0);
+        await UniTask.Delay(TimeSpan.FromSeconds(GameManager.Instance.jumpDealy));
+        _jumpFlag = false;
     }
 
     public void Jump()

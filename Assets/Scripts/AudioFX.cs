@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class AudioFX : MonoBehaviour
@@ -9,6 +10,11 @@ public class AudioFX : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    public void SetVolume(float value)
+    {
+        _audioSource.volume = value;
     }
 
     public void PlayButtonSound()

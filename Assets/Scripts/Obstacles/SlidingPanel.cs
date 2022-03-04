@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class SlidingPanel : Obstacle
 {
+    public override string Key { get; } = "SlidingPanel";
+    
     [SerializeField] private float _scalingTime = 1f;
 
     private Vector3 _rightPosition = Vector3.right * 3f;
@@ -18,16 +20,14 @@ public class SlidingPanel : Obstacle
     {
         transform.localScale = _minimalScale;
         gameObject.SetActive(false);
+        MoveRight();
     }
 
     public override void Show()
     {
         gameObject.SetActive(true);
         _isShown = true;
-        transform.DOScale(_normalScale, _scalingTime).OnComplete(() =>
-        {
-            MoveRight();
-        });
+        transform.DOScale(_normalScale, _scalingTime);
     }
 
     public override void Hide()
@@ -49,4 +49,8 @@ public class SlidingPanel : Obstacle
         transform.DOMove(-_rightPosition, _scalingTime).OnComplete(() => MoveRight());
     }
 
+    private void OnDestroy()
+    {
+        DOTween.KillAll();
+    }
 }
