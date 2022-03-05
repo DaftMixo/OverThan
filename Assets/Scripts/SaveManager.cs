@@ -44,8 +44,8 @@ public class GameData
     [Serializable]
     public class SettingsData
     {
-        public float Music;
-        public float Sound;
+        public float Music = .7f;
+        public float Sound = .7f;
         public bool Vibration;
     }
 }
