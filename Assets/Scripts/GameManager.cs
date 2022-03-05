@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -19,7 +21,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIController _uiController;
     [SerializeField] private AudioFX _audioFx;
     [SerializeField] private RewardedAdsButton _ads;
-    [SerializeField] private Settings _settings;
     
     [Header("Game objects")]
     [SerializeField] private GameObject player;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     private SaveManager _saveManager;
     private Obstacle _activeObstacle;
     private GameData _data;
+    private Settings _settings;
 
     private InputHandler _inputHandler;
     private PlayerController _playerController;
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         _saveManager = GetComponent<SaveManager>();
+        _settings = GetComponent<Settings>();
         _data = _saveManager.LoadData();
         _gameScore = _data.LastScore;
         
@@ -71,17 +74,20 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         OnDataUpdate?.Invoke(_data);
-        
+
         _audioFx = GetComponent<AudioFX>();
         _inputHandler = GetComponent<InputHandler>();
         _playerController = player.GetComponent<PlayerController>();
 
         _playerController.Interactable = false;
+        
+        _settings.Initialize(_data);
 
         _playerController.switchTriggerZone += SwitchTriggerZone;
         _playerController.death += Death;
         _inputHandler.touched += PlayGame;
         _uiController.OnButtonClick += PlayButtonSound;
+        _settings.OnSettingsUpdate += SaveSettings;
         
         _uiController.UpdateMenu(_data.Score, _data.LastScore);
         _playerController.SetModel(_gallery.GetPlayerModel());
@@ -318,11 +324,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SaveSettings(GameData.SettingsData data)
+    {
+        _audioFx.SetSound(data.Sound);
+        _audioFx.SetMusic(data.Music);
+        
+        _data.Settings.Sound = data.Sound;
+        _data.Settings.Music = data.Music;
+        _data.Settings.Vinration = data.Vinration;
+        _saveManager.SaveData(_data);
+    }
+
     private void OnDestroy()
     {
         _playerController.switchTriggerZone -= SwitchTriggerZone;
         _playerController.death -= Death;
         _inputHandler.touched -= PlayGame;
         _uiController.OnButtonClick -= PlayButtonSound;
+        _settings.OnSettingsUpdate -= SaveSettings;
     }
 }
