@@ -145,6 +145,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77801cea856095a4db6f1f88541b059d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &303608811 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 365397268737162757, guid: 89b18902a05bf664982f84d6ae730301, type: 3}
+  m_PrefabInstance: {fileID: 7715094591625912819}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &329166324 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3748946884600533832, guid: 89b18902a05bf664982f84d6ae730301, type: 3}
@@ -505,6 +516,10 @@ PrefabInstance:
       propertyPath: _volumeSlider
       value: 
       objectReference: {fileID: 415365681}
+    - target: {fileID: 6909556146289268777, guid: 5e1d5038173050a4ab6e4a3bbf75f0e4, type: 3}
+      propertyPath: _vibrationToggle
+      value: 
+      objectReference: {fileID: 303608811}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1d5038173050a4ab6e4a3bbf75f0e4, type: 3}
 --- !u!114 &1550255437461255397 stripped
@@ -761,6 +776,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 365397268737162757, guid: 89b18902a05bf664982f84d6ae730301, type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 870725342991976002, guid: 89b18902a05bf664982f84d6ae730301, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

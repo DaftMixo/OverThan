@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         _playerController.switchTriggerZone += SwitchTriggerZone;
         _playerController.death += Death;
         _inputHandler.touched += PlayGame;
+        _inputHandler.touched += Vibrate;
         _uiController.OnButtonClick += PlayButtonSound;
         _settings.OnSettingsUpdate += SaveSettings;
         
@@ -96,6 +97,14 @@ public class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
 
         timer = timerValue;
+    }
+
+    private void Vibrate()
+    {
+        if (_data.Settings.Vibration)
+        {
+            Handheld.Vibrate();
+        }
     }
 
     public async void StartGame()
@@ -331,7 +340,7 @@ public class GameManager : MonoBehaviour
         
         _data.Settings.Sound = data.Sound;
         _data.Settings.Music = data.Music;
-        _data.Settings.Vinration = data.Vinration;
+        _data.Settings.Vibration = data.Vibration;
         _saveManager.SaveData(_data);
     }
 
@@ -342,5 +351,6 @@ public class GameManager : MonoBehaviour
         _inputHandler.touched -= PlayGame;
         _uiController.OnButtonClick -= PlayButtonSound;
         _settings.OnSettingsUpdate -= SaveSettings;
+        _inputHandler.touched -= Vibrate;
     }
 }

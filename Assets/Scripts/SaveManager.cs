@@ -46,6 +46,6 @@ public class GameData
     {
         public float Music;
         public float Sound;
-        public bool Vinration;
+        public bool Vibration;
     }
 }
