@@ -17,7 +17,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _deathScreen;
 
     [Header("UI items")] 
-    [SerializeField] private TMP_Text _startMenuLable;
+    [SerializeField] private TMP_Text _startMenuLabel;
     [SerializeField] private TMP_Text _menuScreenScore;
     [SerializeField] private TMP_Text _deathScreenScore;
     
@@ -35,9 +35,9 @@ public class UIController : MonoBehaviour
     {
         SetMenuScore(score);
         
-        _startMenuLable.text = "START";
+        _startMenuLabel.text = "START";
         if (lastScore != 0)
-            _startMenuLable.text = "CONTINUE";
+            _startMenuLabel.text = "CONTINUE";
     }
 
     private void SetMenuScore(int value)

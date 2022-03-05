@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
@@ -85,7 +86,6 @@ public class GameManager : MonoBehaviour
 
         _playerController.switchTriggerZone += SwitchTriggerZone;
         _playerController.death += Death;
-        _inputHandler.touched += PlayGame;
         _inputHandler.touched += Vibrate;
         _uiController.OnButtonClick += PlayButtonSound;
         _settings.OnSettingsUpdate += SaveSettings;
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         if (_data.Settings.Vibration)
         {
-            Handheld.Vibrate();
+            Vibrator.Vibrate();
         }
     }
 
@@ -118,8 +118,6 @@ public class GameManager : MonoBehaviour
         }
         
         _spawnedObstacles.Clear();
-
-        _inputHandler.touched += _playerController.Jump;
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
 
@@ -146,7 +144,11 @@ public class GameManager : MonoBehaviour
         }
 
         await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        
         NextObstacle();
+
+        _inputHandler.touched += PlayGame;
+        _inputHandler.touched += _playerController.Jump;
         _playerController.Interactable = true;
     }
 
@@ -161,7 +163,9 @@ public class GameManager : MonoBehaviour
         {
             while (timer > 0)
             {
-                timer -= 1;
+                if(_gameState == GameState.Game)
+                    timer -= 1;
+                if(_gameState != GameState.Game && _gameState != GameState.PauseMenu) break;
                 await UniTask.Delay(TimeSpan.FromSeconds(1f));
             }
             while (_activeObstacle.Key == newObstacle.Key)
@@ -212,7 +216,8 @@ public class GameManager : MonoBehaviour
             pausePosition = -2.5f;
         }
 
-        if (_inputHandler.touched != null) _inputHandler.touched -= _playerController.Jump;
+        _inputHandler.touched -= PlayGame;
+        _inputHandler.touched -= _playerController.Jump;
     }
 
     public void ContinueGame()
@@ -221,6 +226,7 @@ public class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
         
         _playerController.Interactable = true;
+        _inputHandler.touched += PlayGame;
         _inputHandler.touched += _playerController.Jump;
     }
     
@@ -240,8 +246,9 @@ public class GameManager : MonoBehaviour
         _gameScore = 0;
 
         _playerController.Interactable = false;
-
-        if (_inputHandler.touched != null) _inputHandler.touched -= _playerController.Jump;
+        
+        _inputHandler.touched -= PlayGame;
+        _inputHandler.touched -= _playerController.Jump;
         
         bottomZone.SetActive(true);
         topZone.SetActive(true);
@@ -295,7 +302,9 @@ public class GameManager : MonoBehaviour
         _uiController.UpdateMenu(_data.Score, _data.LastScore);
 
         _playerController.SetFixedJump(true);
-        if (_inputHandler != null) _inputHandler.touched -= _playerController.Jump;
+        
+        _inputHandler.touched -= PlayGame;
+        _inputHandler.touched -= _playerController.Jump;
 
         _playerController.Interactable = false;
         _activeObstacle?.Hide();
@@ -349,6 +358,7 @@ public class GameManager : MonoBehaviour
         _playerController.switchTriggerZone -= SwitchTriggerZone;
         _playerController.death -= Death;
         _inputHandler.touched -= PlayGame;
+        _inputHandler.touched -= _playerController.Jump;
         _uiController.OnButtonClick -= PlayButtonSound;
         _settings.OnSettingsUpdate -= SaveSettings;
         _inputHandler.touched -= Vibrate;

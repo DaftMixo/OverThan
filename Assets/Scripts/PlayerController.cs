@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour
 
     public void SetModel(Mesh mesh)
     {
-        _meshFilter.mesh = mesh;
+        if(mesh != null)
+            _meshFilter.mesh = mesh;
     }
 
     public void SetFixedJump(bool value)
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rb;
     private bool _fixedJump = true;
 
-    private void Start()
+    private void Awake()
     {
         _meshFilter = GetComponent<MeshFilter>();
         _rb = GetComponent<Rigidbody>();
