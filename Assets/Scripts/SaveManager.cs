@@ -31,7 +31,7 @@ public class GameData
 
     public int PlayerIndex;
 
-    public SettingsData Settings;
+    public SettingsData Settings = new SettingsData();
 
     [Serializable]
     public class Model

@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     private GalleryController _gallery;
     private SaveManager _saveManager;
     private Obstacle _activeObstacle;
-    private GameData _data;
+    private GameData _data = new GameData();
     private Settings _settings;
 
     private InputHandler _inputHandler;
