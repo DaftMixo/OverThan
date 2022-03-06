@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: :UnityAds:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/jars/libs/unity-scaradapter-1920.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/jars/libs/unity-scaradapter-1950.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/jars/libs/unity-scaradapter-2000.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/jars/libs/unity-scaradapter-common.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d36e684fd0f8d445f60bd091f9a9abfd/transformed/UnityAds/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

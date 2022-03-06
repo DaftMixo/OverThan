@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         if (_data.Settings.Vibration)
         {
-            Vibrator.Vibrate();
+            Vibration.Vibrate(100);
         }
     }
 
