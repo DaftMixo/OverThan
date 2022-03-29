@@ -7,9 +7,21 @@ public class PlayerController : MonoBehaviour
     public Action switchTriggerZone;
     public Action death;
 
+    [SerializeField] private GameData.Model modelData;
+    [SerializeField] private float _jumpForce = 2f;
+
     private bool _isInteractable = false;
-    private MeshFilter _meshFilter;
     private bool _jumpFlag;
+
+    private Rigidbody _rb;
+    private bool _fixedJump = true;
+
+    public bool IsUnlocked => modelData.IsUnlocked;
+    public GameData.Model ModelData
+    {
+        get { return modelData; }
+        set { modelData = value; }
+    }
 
     public bool Interactable
     {
@@ -17,25 +29,13 @@ public class PlayerController : MonoBehaviour
         set { _isInteractable = value; }
     }
 
-    public void SetModel(Mesh mesh)
-    {
-        if(mesh != null)
-            _meshFilter.mesh = mesh;
-    }
-
     public void SetFixedJump(bool value)
     {
         _fixedJump = value;
     }
-    
-    [SerializeField] private float _jumpForce = 2f;
-    
-    private Rigidbody _rb;
-    private bool _fixedJump = true;
 
     private void Awake()
     {
-        _meshFilter = GetComponent<MeshFilter>();
         _rb = GetComponent<Rigidbody>();
     }
     

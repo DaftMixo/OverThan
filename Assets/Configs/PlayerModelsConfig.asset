@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de81d420749ddfb4e908b42f167a934a, type: 3}
   m_Name: PlayerModelsConfig
   m_EditorClassIdentifier: 
-  models:
-  - Key: Sphere
-    Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-    IsUnlocked: 1
-  - Key: Cube
-    Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    IsUnlocked: 0
+  modelsPrefab:
+  - {fileID: 2390193993244194192, guid: dcdf329d7eec1324c8b8852ac97e9139, type: 3}
+  - {fileID: 2390193993244194192, guid: f73991c5cb74539468d9152c86f8bf88, type: 3}
+  - {fileID: 2390193993244194192, guid: f38b5a6c9198df54ab7dff1f94bf2129, type: 3}

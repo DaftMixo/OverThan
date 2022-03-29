@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -25,19 +26,21 @@ public class SaveManager : MonoBehaviour
 [Serializable]
 public class GameData
 {
+    public string BuildVersion;
+
     public bool IsFirstStart = true;
     public int Score;
     public int LastScore;
 
     public int PlayerIndex;
 
+    public List<Model> ModelsList;
     public SettingsData Settings = new SettingsData();
 
     [Serializable]
     public class Model
     {
         public string Key;
-        public Mesh Mesh;
         public bool IsUnlocked;
     }
     

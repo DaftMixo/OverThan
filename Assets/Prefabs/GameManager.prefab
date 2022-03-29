@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c488e7485f3348f4098d27058ef0f392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mixer: {fileID: 0}
+  _mixer: {fileID: 24100000, guid: e2955d1dbfe4245488669a22c80ed98e, type: 2}
   _soundSource: {fileID: 6603701448652294966}
   _musicSource: {fileID: 4300010848237835337}
   _buttonAudioClips:
@@ -106,6 +106,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 030515f205b54fc478961cbe39c4e75e, type: 3}
   - {fileID: 8300000, guid: 05b517e735c2cec4abd77c440b4c76ad, type: 3}
   - {fileID: 8300000, guid: 9df4c2e414fd7d847978300d2a2b0213, type: 3}
+  _musicAudioClips:
+  - {fileID: 8300000, guid: a73b50ea7984f3d45957d4c12cbe9497, type: 3}
+  - {fileID: 8300000, guid: 5e0e2d64ff0af2a4c8fba8b3f5d17007, type: 3}
+  - {fileID: 8300000, guid: b95f425f538326b43b6c85e0960d8488, type: 3}
+  - {fileID: 8300000, guid: cf772cf3949fa39468efd672450ce9ca, type: 3}
+  - {fileID: 8300000, guid: 612a37c3b8925e045b4612fd857463bd, type: 3}
+  - {fileID: 8300000, guid: f23941e21320b5b42af7d834b6c3b1db, type: 3}
+  - {fileID: 8300000, guid: fcb7bd0f27907b848a417c8d5b0fd06f, type: 3}
 --- !u!114 &1550255437441864534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,8 +138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f362065cdeb4da4e9004d9a2471258b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _volumeSlider: {fileID: 0}
-  _colorSlider: {fileID: 0}
+  _soundSlider: {fileID: 0}
+  _musicSlider: {fileID: 0}
+  _vibrationToggle: {fileID: 0}
 --- !u!1 &2475432031493531484
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,8 +182,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5451696978557223671, guid: e2955d1dbfe4245488669a22c80ed98e, type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: a73b50ea7984f3d45957d4c12cbe9497, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
