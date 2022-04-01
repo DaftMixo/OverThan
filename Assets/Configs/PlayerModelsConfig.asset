@@ -15,4 +15,5 @@ MonoBehaviour:
   modelsPrefab:
   - {fileID: 2390193993244194192, guid: dcdf329d7eec1324c8b8852ac97e9139, type: 3}
   - {fileID: 2390193993244194192, guid: f73991c5cb74539468d9152c86f8bf88, type: 3}
+  - {fileID: 2390193993244194192, guid: d9105909b493d4748b8d55826c9f9011, type: 3}
   - {fileID: 2390193993244194192, guid: f38b5a6c9198df54ab7dff1f94bf2129, type: 3}

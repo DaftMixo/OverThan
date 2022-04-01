@@ -1,31 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GalleryController : MonoBehaviour
 {
+    [HideInInspector] public UnityEvent<PlayerController> OnChangePlayer; 
+
     [SerializeField] private GameObject bar;
     [SerializeField] private GalleryItem barItemPrefab;
 
     private PlayerModelsConfig _config;
-    private List<GameData.Model> _modelsList;
+    private PlayerController _currentPlayer;
 
+    private List<GalleryItem> _items = new List<GalleryItem>();
 
-    public void Instantiate(PlayerModelsConfig config, List<GameData.Model> modelsList)
+    public void Instantiate(PlayerModelsConfig config, string startKey)
     {
         _config = config;
-        _modelsList = modelsList;
-        Debug.Log(_modelsList.Count);
-        for (int i = 0; i <= _modelsList.Count; i++)
+
+        for (int i = 0; i < _config.ArrayLength; i++)
         {
             var item = Instantiate(barItemPrefab, bar.transform);
-            item.Init(i);
+            var model = _config.GetModel(i).Key;
+            var condition = _config.GetPlayer(model).UnlockCondition;
+
+            item.Init(model, condition, ChangeModel);
+            _items.Add(item);
         }
+
+        ChangeModel(startKey);
     }
 
-    public GameObject GetPlayerModel(int index)
+    private void ChangeModel(string key)
     {
-        if (_modelsList[index] != null && _modelsList[index].IsUnlocked)
-            return _config.GetModel(index).gameObject;
-        return null;
+        _currentPlayer = Instantiate(_config.GetPlayer(key));
+        OnChangePlayer?.Invoke(_currentPlayer);
     }
 }

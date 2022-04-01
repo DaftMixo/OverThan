@@ -26,23 +26,14 @@ public class SaveManager : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public string BuildVersion;
-
     public bool IsFirstStart = true;
+    public int ViewedAds;
     public int Score;
     public int LastScore;
 
-    public int PlayerIndex;
+    public string PlayerKey = "Ball";
 
-    public List<Model> ModelsList;
     public SettingsData Settings = new SettingsData();
-
-    [Serializable]
-    public class Model
-    {
-        public string Key;
-        public bool IsUnlocked;
-    }
     
     [Serializable]
     public class SettingsData

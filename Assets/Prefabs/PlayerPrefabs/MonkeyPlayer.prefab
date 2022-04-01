@@ -109,10 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f33d8da410b794a8c485185717b139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelData:
-    Key: Monkey
-    IsUnlocked: 1
-  _jumpForce: 300
+  unlockCondition: {fileID: 11400000, guid: 0c6b6c32e0c20084caad1a235359da92, type: 2}
+  key: Monkey
+  jumpForce: 300
 --- !u!54 &2390193993244194207
 Rigidbody:
   m_ObjectHideFlags: 0

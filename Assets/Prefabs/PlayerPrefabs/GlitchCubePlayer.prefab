@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2390193993244194192}
   - component: {fileID: 2390193993244194207}
   m_Layer: 0
-  m_Name: CubePlayer
+  m_Name: GlitchCubePlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f33d8da410b794a8c485185717b139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockCondition: {fileID: 11400000, guid: ac0d8d3d052e689469ae3c8f51c6d4d8, type: 2}
-  key: Cube
+  unlockCondition: {fileID: 11400000, guid: 3f80a258c9bb0ba44a9a7201f1365cd0, type: 2}
+  key: Glitch Cube
   jumpForce: 300
 --- !u!54 &2390193993244194207
 Rigidbody:

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public event Action<GameData> OnDataUpdate;
+    public UnityEvent<GameData> OnDataUpdate;
+
+    public GameData GameData => _data;
     
     [HideInInspector] public float jumpDealy = .25f;
     [HideInInspector] public bool gameIsActive;
@@ -32,7 +35,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timerValue = 5;
 
     private float timer;
-    private GameObject player;
     private GalleryController _gallery;
     private SaveManager _saveManager;
     private Obstacle _activeObstacle;
@@ -63,17 +65,10 @@ public class GameManager : MonoBehaviour
         _settings = GetComponent<Settings>();
         _data = _saveManager.LoadData();
         _gameScore = _data.LastScore;
-
-        if(_data.BuildVersion != Application.version)
-        {
-            GenerateModelsList();
-            _data.BuildVersion = Application.version;
-        }
         
         _gallery = GetComponent<GalleryController>();
-        _gallery.Instantiate(_playerModelsConfig, _data.ModelsList);
-
-        player = Instantiate(_gallery.GetPlayerModel(_data.PlayerIndex));
+        _gallery.OnChangePlayer.AddListener(ChangePlayer);
+        _gallery.Instantiate(_playerModelsConfig, _data.PlayerKey);
     }
     
     private void Start()
@@ -82,8 +77,6 @@ public class GameManager : MonoBehaviour
 
         _audioFx = GetComponent<AudioFX>();
         _inputHandler = GetComponent<InputHandler>();
-
-        SignPlayer();
 
         _settings.Initialize(_data);
 
@@ -101,13 +94,12 @@ public class GameManager : MonoBehaviour
 
     private void SignPlayer()
     {
-        if (player == null)
+        if (_playerController == null)
         {
             Debug.LogError("Player is NULL");
             return;
         }
 
-        _playerController = player.GetComponent<PlayerController>();
         _playerController.Interactable = false;
         _playerController.switchTriggerZone += SwitchTriggerZone;
         _playerController.death += Death;
@@ -119,13 +111,6 @@ public class GameManager : MonoBehaviour
         _playerController.death -= Death;
     }
 
-    private void Vibrate()
-    {
-        if (_data.Settings.Vibration)
-        {
-            Vibration.Vibrate(50);
-        }
-    }
 
     public async void StartGame()
     {
@@ -282,15 +267,21 @@ public class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
     }
 
-    public void ChangePlayer(int index = 0)
+    public void ChangePlayer(PlayerController playerController)
     {
-        UnSignPlayer();
-        Destroy(player.gameObject);
-        _data.PlayerIndex = index;
-        player = Instantiate(_gallery.GetPlayerModel(_data.PlayerIndex));
+        if (_playerController != null)
+        {
+            UnSignPlayer();
+            Destroy(_playerController.gameObject);
+        }
+
+        _data.PlayerKey = playerController.Key;
+        _playerController = playerController;
         SignPlayer();
+        
+        Debug.Log(_data.PlayerKey);
     }
-    
+
     public void ShowSettings()
     {
         _gameState = GameState.Settings;
@@ -339,11 +330,6 @@ public class GameManager : MonoBehaviour
         _activeObstacle?.Hide();
     }
 
-    private void PlayButtonSound()
-    {
-        _audioFx.PlayButtonSound();
-    }
-
     private void SwitchTriggerZone()
     {
         _gameScore++;
@@ -382,24 +368,17 @@ public class GameManager : MonoBehaviour
         _saveManager.SaveData(_data);
     }
 
-    [ContextMenu("Generate model list")]
-    private void GenerateModelsList()
+    private void PlayButtonSound()
     {
-        List<string> savedKeys = new List<string>();
+        _audioFx.PlayButtonSound();
+    }
 
-        foreach (var item in _data.ModelsList)
+    private void Vibrate()
+    {
+        if (_data.Settings.Vibration)
         {
-            savedKeys.Add(item.Key);
+            Vibration.Vibrate(50);
         }
-
-        for (int i = 0; i < _playerModelsConfig.ArrayLength; i++)
-        {
-            if (savedKeys.Contains(_playerModelsConfig.GetModel(i).ModelData.Key)) continue;
-
-            GameData.Model model = _playerModelsConfig.GetModel(i).ModelData;
-            _data.ModelsList.Add(model);
-        }
-        Debug.Log(_data.ModelsList.Count());
     }
 
     private void OnDestroy()
@@ -410,5 +389,7 @@ public class GameManager : MonoBehaviour
         _uiController.OnButtonClick -= PlayButtonSound;
         _settings.OnSettingsUpdate -= SaveSettings;
         _inputHandler.touched -= Vibrate;
+        _gallery.OnChangePlayer.RemoveAllListeners();
+        OnDataUpdate.RemoveAllListeners();
     }
 }

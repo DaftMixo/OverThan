@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
     public Action switchTriggerZone;
     public Action death;
 
-    [SerializeField] private GameData.Model modelData;
-    [SerializeField] private float _jumpForce = 2f;
+    [SerializeField] private UnlockCondition unlockCondition;
+    [SerializeField] private string key;
+    [SerializeField] private float jumpForce = 300f;
 
     private bool _isInteractable = false;
     private bool _jumpFlag;
@@ -16,12 +17,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rb;
     private bool _fixedJump = true;
 
-    public bool IsUnlocked => modelData.IsUnlocked;
-    public GameData.Model ModelData
-    {
-        get { return modelData; }
-        set { modelData = value; }
-    }
+    public string Key => key;
+    public UnlockCondition UnlockCondition => unlockCondition;
 
     public bool Interactable
     {
@@ -53,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private async void DelayedJump()
     {
         _rb.velocity = new Vector3(0, 4, 0);
+        Rotate();
         await UniTask.Delay(TimeSpan.FromSeconds(GameManager.Instance.jumpDealy));
         _jumpFlag = false;
     }
@@ -66,13 +64,23 @@ public class PlayerController : MonoBehaviour
     {
         if (_fixedJump)
         {
-            _rb.velocity = new Vector3(0, 4, 0);
+            _rb.AddForce(Vector3.up * jumpForce * this.jumpForce, ForceMode.Force);
             _fixedJump = false;
         }
         else
         {
-            _rb.AddForce(Vector3.up * jumpForce * _jumpForce);
+            _rb.AddForce(Vector3.up * jumpForce * this.jumpForce);
         }
+
+        Rotate();
+    }
+
+    private void Rotate()
+    {
+        var randomRot = new Vector3(UnityEngine.Random.Range(-1f, 1f),
+                                    UnityEngine.Random.Range(-1f, 1f),
+                                    UnityEngine.Random.Range(-1f, 1f));
+        _rb.AddTorque(randomRot * 5, ForceMode.Force);
     }
 
     private void OnTriggerEnter(Collider other)
