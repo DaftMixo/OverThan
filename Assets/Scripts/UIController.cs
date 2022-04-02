@@ -21,13 +21,18 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text _menuScreenScore;
     [SerializeField] private TMP_Text _deathScreenScore;
     
-    [SerializeField] private UiButtons[] _uiButtons;
+    private UiButton[] _uiButtons;
+
+    private void Awake()
+    {
+        _uiButtons = FindObjectsOfType<UiButton>();
+    }
 
     private void Start()
     {
         foreach (var button in _uiButtons)
         {
-            button.SetAudio(OnButtonClick);
+            button.AddListner(OnButtonClick);
         }
     }
 
@@ -54,7 +59,7 @@ public class UIController : MonoBehaviour
     {
         foreach (var button in _uiButtons)
         {
-            if (button.Key == "Continue_death") button.Button.gameObject.SetActive(value);
+            if (button.Key == "Continue_death") button.gameObject.SetActive(value);
         }
     }
     
@@ -62,14 +67,14 @@ public class UIController : MonoBehaviour
     {
         foreach (var button in _uiButtons)
         {
-            if (button.Key == "Restart_death") button.Button.interactable = false;
-            if (button.Key == "Exit_death") button.Button.interactable = false;
+            if (button.Key == "Restart_death") button.interactable = false;
+            if (button.Key == "Exit_death") button.interactable = false;
         }
         await UniTask.Delay(TimeSpan.FromSeconds(2));
         foreach (var button in _uiButtons)
         {
-            if (button.Key == "Restart_death") button.Button.interactable = true;
-            if (button.Key == "Exit_death") button.Button.interactable = true;
+            if (button.Key == "Restart_death") button.interactable = true;
+            if (button.Key == "Exit_death") button.interactable = true;
         }
 
     }
@@ -113,22 +118,6 @@ public class UIController : MonoBehaviour
         foreach (var button in _uiButtons)
         {
             button.OnDestroy();
-        }
-    }
-
-    [Serializable] public class UiButtons
-    {
-        public string Key;
-        public Button Button;
-
-        public void SetAudio(Action action)
-        {
-            Button.onClick.AddListener(action.Invoke);
-        }
-
-        public void OnDestroy()
-        {
-            Button.onClick.RemoveAllListeners();
         }
     }
 }

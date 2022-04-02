@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_fixedJump)
         {
-            _rb.AddForce(Vector3.up * jumpForce * this.jumpForce, ForceMode.Force);
+            _rb.velocity = new Vector3(0, 4, 0);
             _fixedJump = false;
         }
         else

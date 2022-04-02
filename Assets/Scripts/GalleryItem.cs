@@ -12,6 +12,8 @@ public class GalleryItem : MonoBehaviour
     private UnityAction<string> _action;
     private UnlockCondition _condition;
 
+    public string Key => _key;
+
     public void Init(string key, UnlockCondition condition, UnityAction<string> action)
     {
         _key = key;

@@ -278,8 +278,6 @@ public class GameManager : MonoBehaviour
         _data.PlayerKey = playerController.Key;
         _playerController = playerController;
         SignPlayer();
-        
-        Debug.Log(_data.PlayerKey);
     }
 
     public void ShowSettings()
