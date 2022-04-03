@@ -17,27 +17,28 @@ public class RotatingPanel : Obstacle
 
     private void Start()
     {
-        transform.localScale = _minimalScale;
-        gameObject.SetActive(false);
+        //transform.localScale = _normalScale;
+        //gameObject.SetActive(false);
     }
     
     public override void Show()
     {
         gameObject.SetActive(true);
         _isShown = true;
-        transform.DOScale(_normalScale, _scalingTime);
+        //transform.DOScale(_normalScale, _scalingTime);
     }
 
     public override void Hide()
     {
         if (!_isShown)
             return;
-        transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
+        gameObject.SetActive(false);
         _isShown = false;
+        //transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
         
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(!_isShown)
             return;

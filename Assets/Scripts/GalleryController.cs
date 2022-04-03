@@ -14,7 +14,7 @@ public class GalleryController : MonoBehaviour
 
     private List<GalleryItem> _items = new List<GalleryItem>();
 
-    public void Instantiate(PlayerModelsConfig config, string startKey)
+    public void Initialize(PlayerModelsConfig config, string startKey)
     {
         _config = config;
 

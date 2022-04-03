@@ -18,8 +18,8 @@ public class SlidingPanel : Obstacle
 
     private void Start()
     {
-        transform.localScale = _minimalScale;
-        gameObject.SetActive(false);
+        //transform.localScale = _minimalScale;
+        //gameObject.SetActive(false);
         MoveRight();
     }
 
@@ -27,14 +27,15 @@ public class SlidingPanel : Obstacle
     {
         gameObject.SetActive(true);
         _isShown = true;
-        transform.DOScale(_normalScale, _scalingTime);
+        //transform.DOScale(_normalScale, _scalingTime);
     }
 
     public override void Hide()
     {
         if (!_isShown)
             return;
-        transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
+        //transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
+        gameObject.SetActive(false);
         _isShown = false;
         
     }

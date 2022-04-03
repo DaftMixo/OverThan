@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1550255437441864532}
   - component: {fileID: 1550255437441864534}
   - component: {fileID: 6909556146289268777}
+  - component: {fileID: 5170471819525001844}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -50,13 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77801cea856095a4db6f1f88541b059d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDataUpdate:
+    m_PersistentCalls:
+      m_Calls: []
   jumpDealy: 0.25
   gameIsActive: 0
   pausePosition: 0
   _uiController: {fileID: 0}
   _audioFx: {fileID: 1550255437441864532}
   _ads: {fileID: 0}
-  player: {fileID: 0}
   topZone: {fileID: 0}
   bottomZone: {fileID: 0}
   _obstaclesConfig: {fileID: 11400000, guid: f6488024f7c93ac46905a57a942fd7f7, type: 2}
@@ -126,6 +129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca2ffd8c31230f4a84efca3c9ca660f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnChangePlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  bar: {fileID: 0}
+  barItemPrefab: {fileID: 0}
 --- !u!114 &6909556146289268777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +149,18 @@ MonoBehaviour:
   _soundSlider: {fileID: 0}
   _musicSlider: {fileID: 0}
   _vibrationToggle: {fileID: 0}
+--- !u!114 &5170471819525001844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550255437441864527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f965d71c314fd06469c362cd750af4ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2475432031493531484
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text _startMenuLabel;
     [SerializeField] private TMP_Text _menuScreenScore;
     [SerializeField] private TMP_Text _deathScreenScore;
+    [SerializeField] private Image _switchTimer;
     
     private UiButton[] _uiButtons;
 
@@ -43,6 +44,16 @@ public class UIController : MonoBehaviour
         _startMenuLabel.text = "START";
         if (lastScore != 0)
             _startMenuLabel.text = "CONTINUE";
+    }
+
+    public void UpdateTimer(float time)
+    {
+        _switchTimer.fillAmount = Map(time, GameManager.Instance.ObstacleTimer, 0, 1, 0);
+    }
+
+    public float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
+    {
+        return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
     }
 
     private void SetMenuScore(int value)

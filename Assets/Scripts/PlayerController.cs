@@ -38,13 +38,13 @@ public class PlayerController : MonoBehaviour
     
     private void Update()
     {
-        if (!GameManager.Instance.gameIsActive && transform.position.y <= GameManager.Instance.pausePosition && !_jumpFlag)
+        if (!_isInteractable && transform.position.y <= GameManager.Instance.pausePosition && !_jumpFlag)
         {
             _jumpFlag = true;
             DelayedJump();
         }
         
-        if (!GameManager.Instance.gameIsActive && transform.position.y > GameManager.Instance.pausePosition + 1 && _rb.velocity.y > 0)
+        if (!_isInteractable && transform.position.y > GameManager.Instance.pausePosition + 1 && _rb.velocity.y > 0)
             _rb.velocity = Vector3.zero;
     }
     private async void DelayedJump()
@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
     
     public void Jump(float jumpForce)
     {
+        _isInteractable = true;
+
         if (_fixedJump)
         {
             _rb.velocity = new Vector3(0, 4, 0);
