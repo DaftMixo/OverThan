@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockCondition: {fileID: 11400000, guid: 3f80a258c9bb0ba44a9a7201f1365cd0, type: 2}
-  key: Glitch Cube
+  key: Holo Cube
   jumpForce: 300
 --- !u!54 &2390193993244194207
 Rigidbody:

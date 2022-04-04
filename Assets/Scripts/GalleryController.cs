@@ -21,10 +21,22 @@ public class GalleryController : MonoBehaviour
         for (int i = 0; i < _config.ArrayLength; i++)
         {
             var item = Instantiate(barItemPrefab, bar.transform);
-            var model = _config.GetModel(i).Key;
-            var condition = _config.GetPlayer(model).UnlockCondition;
+            var key = _config.GetModel(i).Key;
+            var condition = _config.GetPlayer(key).UnlockCondition;
 
-            item.Init(model, condition, ChangeModel);
+            GalleryItemInitData data = new GalleryItemInitData()
+            {
+                Key = key,
+                Mesh = _config.GetMesh(key),
+                Material = _config.GetMaterial(key),
+                Scale = _config.GetScale(key),
+                Condition = _config.GetPlayer(key).UnlockCondition,
+                Action = ChangeModel
+        };
+
+            item.Init(data);
+
+            //item.Init(key, condition, ChangeModel);
             _items.Add(item);
         }
 

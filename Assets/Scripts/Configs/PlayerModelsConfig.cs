@@ -18,11 +18,27 @@ public class PlayerModelsConfig : ScriptableObject
     public PlayerController GetPlayer(string key)
     {
         var player = Array.Find(modelsPrefab, p => p.Key == key);
+        if (player == null) return modelsPrefab[0];
         return player;
     }
 
     public UnlockCondition GetModelStatus(string key)
     {
         return GetPlayer(key).UnlockCondition;
+    }
+
+    public Mesh GetMesh(string key)
+    {
+        return GetPlayer(key).GetComponent<MeshFilter>().sharedMesh;
+    }
+
+    public Material GetMaterial(string key)
+    {
+        return GetPlayer(key).GetComponent<MeshRenderer>().sharedMaterial;
+    }
+
+    public Vector3 GetScale(string key)
+    {
+        return GetPlayer(key).transform.localScale;
     }
 }
