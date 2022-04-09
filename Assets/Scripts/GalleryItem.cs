@@ -11,8 +11,10 @@ public class GalleryItem : MonoBehaviour
     private string _key;
     private Material _material;
     private Button _button;
-    private UnityAction<string> _action;
+    private UnityAction<string, bool> _action;
     private UnlockCondition _condition;
+
+    private bool _unLocked;
 
     public string Key => _key;
 
@@ -28,7 +30,6 @@ public class GalleryItem : MonoBehaviour
 
         _button = GetComponent<Button>();
         _button.onClick.AddListener(ChangeModel);
-        _button.interactable = false;
 
         label.text = _key;
 
@@ -49,12 +50,7 @@ public class GalleryItem : MonoBehaviour
             return;
         }
 
-        if (_condition.ViewedAdsToUnlock > 0 && data.ViewedAds >= _condition.ViewedAdsToUnlock)
-        {
-            Unlock();
-        }
-        
-        if(data.Score >= _condition.ScoreToUnlock)
+        if (data.Score >= _condition.ScoreToUnlock && data.ViewedAds >= _condition.ViewedAdsToUnlock)
         {
             Unlock();
         }
@@ -62,13 +58,13 @@ public class GalleryItem : MonoBehaviour
 
     private void Unlock()
     {
-        _button.interactable = true;
+        _unLocked = true;
         model.GetComponent<MeshRenderer>().material = _material;
     }
 
     private void ChangeModel()
     {
-        _action?.Invoke(_key);
+        _action?.Invoke(_key, _unLocked);
     }
 }
 
@@ -79,5 +75,5 @@ public struct GalleryItemInitData
     public Material Material;
     public Vector3 Scale;
     public UnlockCondition Condition;
-    public UnityAction<string> Action;
+    public UnityAction<string, bool> Action;
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
 
 public class GalleryController : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class GalleryController : MonoBehaviour
 
     [SerializeField] private GameObject bar;
     [SerializeField] private GalleryItem barItemPrefab;
+    [SerializeField] private Button unlockNotify;
 
     private PlayerModelsConfig _config;
     private PlayerController _currentPlayer;
@@ -17,6 +20,8 @@ public class GalleryController : MonoBehaviour
     public void Initialize(PlayerModelsConfig config, string startKey)
     {
         _config = config;
+        unlockNotify.onClick.AddListener(() => unlockNotify.gameObject.SetActive(false));
+        unlockNotify.gameObject.SetActive(false);
 
         for (int i = 0; i < _config.ArrayLength; i++)
         {
@@ -40,12 +45,26 @@ public class GalleryController : MonoBehaviour
             _items.Add(item);
         }
 
-        ChangeModel(startKey);
+        ChangeModel(startKey, true);
     }
 
-    private void ChangeModel(string key)
+    private void ChangeModel(string key, bool state)
     {
-        _currentPlayer = Instantiate(_config.GetPlayer(key));
-        OnChangePlayer?.Invoke(_currentPlayer);
+        if (state)
+        {
+            _currentPlayer = Instantiate(_config.GetPlayer(key));
+            OnChangePlayer?.Invoke(_currentPlayer);
+        }
+        else
+        {
+            unlockNotify.gameObject.SetActive(true);
+            var note = unlockNotify.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            var condition = _config.GetPlayer(key).UnlockCondition;
+            string text = "TO UNLOCK:\n\n";
+
+            if (condition.ViewedAdsToUnlock > 0) text += $"View {condition.ViewedAdsToUnlock} ADS in total\n\n";
+            if (condition.ScoreToUnlock > 0) text += $"Have score over than {condition.ScoreToUnlock}\n\n";
+            note.text = text;
+        }
     }
 }
