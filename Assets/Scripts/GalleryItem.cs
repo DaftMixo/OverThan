@@ -43,10 +43,11 @@ public class GalleryItem : MonoBehaviour
 
     public void UpdateState(GameData data)
     {
-        if (_condition.ByToUnlock)
+        if (_condition.InAppKey != string.Empty)
         {
-            //TODO: Check to buy game
-            Unlock();
+            if (PlayerPrefs.HasKey(_condition.InAppKey))
+                if (PlayerPrefs.GetString(_condition.InAppKey) != string.Empty)
+                    Unlock();
             return;
         }
 

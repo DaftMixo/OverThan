@@ -5,9 +5,9 @@ public class UnlockCondition : ScriptableObject
 {
     [SerializeField] private int _scoreToUnlock = 0;
     [SerializeField] private int _viewedAdsToUnlock = 0;
-    [SerializeField] private bool _byToUnlock;
+    [SerializeField] private string _inAppKey;
 
     public int ScoreToUnlock => _scoreToUnlock;
     public int ViewedAdsToUnlock => _viewedAdsToUnlock;
-    public bool ByToUnlock => _byToUnlock;
+    public string InAppKey => _inAppKey;
 }

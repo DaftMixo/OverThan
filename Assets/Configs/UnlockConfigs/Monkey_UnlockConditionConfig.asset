@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7e1923e76081348baa1069b5cb91f4, type: 3}
   m_Name: Monkey_UnlockConditionConfig
   m_EditorClassIdentifier: 
-  _scoreToUnlock: 10
-  _viewedAdsToUnlock: 5
-  _byToUnlock: 0
+  _scoreToUnlock: 16
+  _viewedAdsToUnlock: 0
+  _inAppKey: 

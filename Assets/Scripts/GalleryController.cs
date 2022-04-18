@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Purchasing;
 
 public class GalleryController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GalleryController : MonoBehaviour
     [SerializeField] private GameObject bar;
     [SerializeField] private GalleryItem barItemPrefab;
     [SerializeField] private Button unlockNotify;
+    [SerializeField] private Button iapDicePackButton;
 
     private PlayerModelsConfig _config;
     private PlayerController _currentPlayer;
@@ -60,11 +62,21 @@ public class GalleryController : MonoBehaviour
             unlockNotify.gameObject.SetActive(true);
             var note = unlockNotify.gameObject.GetComponentInChildren<TextMeshProUGUI>();
             var condition = _config.GetPlayer(key).UnlockCondition;
+
             string text = "TO UNLOCK:\n\n";
 
             if (condition.ViewedAdsToUnlock > 0) text += $"View {condition.ViewedAdsToUnlock} ADS in total\n\n";
             if (condition.ScoreToUnlock > 0) text += $"Have score over than {condition.ScoreToUnlock}\n\n";
             note.text = text;
+
+            if (condition.InAppKey == IAPManager.ProdIdDicePack)
+            {
+                iapDicePackButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                iapDicePackButton.gameObject.SetActive(false);
+            }
         }
     }
 }

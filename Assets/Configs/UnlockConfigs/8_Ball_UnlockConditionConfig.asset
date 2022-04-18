@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 8_Ball_UnlockConditionConfig
   m_EditorClassIdentifier: 
   _scoreToUnlock: 0
-  _viewedAdsToUnlock: 0
-  _byToUnlock: 0
+  _viewedAdsToUnlock: 8
+  _inAppKey: 

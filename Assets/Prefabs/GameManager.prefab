@@ -55,14 +55,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   jumpDealy: 0.25
-  gameIsActive: 0
   pausePosition: 0
   _uiController: {fileID: 0}
   _audioFx: {fileID: 1550255437441864532}
   _ads: {fileID: 0}
   topZone: {fileID: 0}
   bottomZone: {fileID: 0}
-  _obstaclesConfig: {fileID: 11400000, guid: f6488024f7c93ac46905a57a942fd7f7, type: 2}
+  _obstaclesConfig: {fileID: 11400000, guid: 119d948b1642bdd4880daf076863dad6, type: 2}
   _playerModelsConfig: {fileID: 11400000, guid: c38864659cabe2c47b52177531d9ed09, type: 2}
   timerValue: 7
 --- !u!114 &1550255437441864533
@@ -133,7 +132,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   bar: {fileID: 0}
-  barItemPrefab: {fileID: 0}
+  barItemPrefab: {fileID: 1659244779738086607, guid: 3f9212d4ea3891e4fbae658df250d632, type: 3}
+  unlockNotify: {fileID: 0}
+  iapDicePackButton: {fileID: 0}
 --- !u!114 &6909556146289268777
 MonoBehaviour:
   m_ObjectHideFlags: 0

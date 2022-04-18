@@ -206,18 +206,19 @@ public class GameManager : MonoBehaviour
     {
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
+        _inputHandler.touched += _playerController.Jump;
 
         _obstaclesController.LastObstacle();
         await GameDelay(timerValue);
         NextObstacle();
         
-        _inputHandler.touched += _playerController.Jump;
     }
     
     public void ContinueGameOnDeath()
     {
         StartGame();
         _gameScore = _scoreToRewardedContinue;
+        _data.ViewedAds++;
         _uiController.SetRewardedContinue(false);
     }
 
@@ -296,6 +297,11 @@ public class GameManager : MonoBehaviour
 
         _playerController.Interactable = false;
         _activeObstacle?.Hide();
+    }
+
+    public void InvokeDataUpdate()
+    {
+        OnDataUpdate?.Invoke(_data);
     }
 
     private void SwitchTriggerZone()
