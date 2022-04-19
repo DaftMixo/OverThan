@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
         
         _gallery.OnChangePlayer.AddListener(ChangePlayer);
         _gallery.Initialize(_playerModelsConfig, _data.PlayerKey);
+
     }
     
     private void Start()
@@ -127,6 +129,7 @@ public class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
 
         _uiController.SetRewardedContinue(true);
+        _uiController.UpdateTimer(0);
 
         _topStart = Random.Range(0, 2) == 1;
         _isActiveTop = !_topStart;
@@ -335,7 +338,8 @@ public class GameManager : MonoBehaviour
     {
         _audioFx.SetSound(data.Sound);
         _audioFx.SetMusic(data.Music);
-        
+
+
         _data.Settings.Sound = data.Sound;
         _data.Settings.Music = data.Music;
         _data.Settings.Vibration = data.Vibration;

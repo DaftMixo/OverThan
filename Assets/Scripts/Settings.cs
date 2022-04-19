@@ -10,6 +10,7 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider _soundSlider;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Toggle _vibrationToggle;
+    [SerializeField] private Toggle _vfx;
 
     private GameData.SettingsData _data = new GameData.SettingsData();
 

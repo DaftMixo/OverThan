@@ -26,7 +26,6 @@ public class SaveManager : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public bool IsFirstStart = true;
     public int ViewedAds;
     public int Score;
     public int LastScore;

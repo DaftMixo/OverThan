@@ -15,6 +15,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _settings;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _deathScreen;
+    [SerializeField] private GameObject _tutorialScreen;
 
     [Header("UI items")] 
     [SerializeField] private TMP_Text _startMenuLabel;
@@ -98,6 +99,7 @@ public class UIController : MonoBehaviour
         _settings.SetActive(false);
         _pauseMenu.SetActive(false);
         _deathScreen.SetActive(false);
+        _tutorialScreen.SetActive(false);
         
         switch (gameState)
         {
@@ -106,6 +108,7 @@ public class UIController : MonoBehaviour
                 break;
             case GameState.Game :
                 _game.SetActive(true);
+                _tutorialScreen.SetActive(GameManager.Instance.GameData.Score < 5);
                 break;
             case GameState.PauseMenu :
                 _pauseMenu.SetActive(true);
