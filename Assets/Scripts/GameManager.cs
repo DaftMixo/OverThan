@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
 
         _gameState = GameState.Menu;
         _uiController.SetUI(_gameState);
+
     }
 
     private void SignPlayer()
@@ -123,7 +124,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(obstacle.gameObject);
         }
-        
+
         _spawnedObstacles.Clear();
         _gameState = GameState.Game;
         _uiController.SetUI(_gameState);
@@ -281,7 +282,6 @@ public class GameManager : MonoBehaviour
         _uiController.SetUI(_gameState);
         _uiController.SetDeathScreenScore(_gameScore);
         pausePosition = 0;
-        _ads.LoadAd();
         
         if (_data.Score < _gameScore)
             _data.Score = _gameScore;
@@ -300,6 +300,8 @@ public class GameManager : MonoBehaviour
 
         _playerController.Interactable = false;
         _activeObstacle?.Hide();
+
+        _ads.LoadAd();
     }
 
     public void InvokeDataUpdate()
