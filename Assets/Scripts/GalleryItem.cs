@@ -7,6 +7,7 @@ public class GalleryItem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private GameObject model;
+    [SerializeField] private Image lockImage;
 
     private string _key;
     private Material _material;
@@ -15,8 +16,6 @@ public class GalleryItem : MonoBehaviour
     private UnlockCondition _condition;
 
     private bool _unLocked;
-
-    public string Key => _key;
 
     public void Init(GalleryItemInitData data)
     {
@@ -30,6 +29,11 @@ public class GalleryItem : MonoBehaviour
 
         _button = GetComponent<Button>();
         _button.onClick.AddListener(ChangeModel);
+
+        if (_condition.InAppKey == string.Empty)
+            lockImage.color = Color.white;
+        else 
+            lockImage.color = Color.yellow;
 
         label.text = _key;
 
@@ -60,6 +64,7 @@ public class GalleryItem : MonoBehaviour
     private void Unlock()
     {
         _unLocked = true;
+        lockImage.gameObject.SetActive(false);
         model.GetComponent<MeshRenderer>().material = _material;
     }
 
