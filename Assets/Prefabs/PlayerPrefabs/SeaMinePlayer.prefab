@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2390193993244194192}
   - component: {fileID: 2390193993244194207}
   m_Layer: 0
-  m_Name: BallPlayer
+  m_Name: SeaMinePlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2390193993244194206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2390193993244194206}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -7325594959387692183, guid: 4a845b9d0f8793443a7a776108a45054, type: 3}
 --- !u!23 &2390193993244194194
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 111ba0d647532754493b50f1cf207f50, type: 2}
+  - {fileID: 2100000, guid: 9eab6ff610a84514a8a937158fa535f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,7 +95,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.029
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2390193993244194192
 MonoBehaviour:
@@ -109,10 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f33d8da410b794a8c485185717b139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockCondition: {fileID: 11400000, guid: 04b980cad97bacc4081f14ce8451745c, type: 2}
-  key: Ball
+  unlockCondition: {fileID: 11400000, guid: da81b051729ac5541a8f6ed0655d83d0, type: 2}
+  key: Sea Mine
   jumpForce: 300
-  _rotate: 0
 --- !u!54 &2390193993244194207
 Rigidbody:
   m_ObjectHideFlags: 0

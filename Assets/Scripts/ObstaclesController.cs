@@ -46,8 +46,22 @@ public class ObstaclesController : MonoBehaviour
         _currentObstacle?.Show();
     }
 
+    public void HideAll()
+    {
+        foreach (var obstacle in _spawnedObstacles)
+        {
+            obstacle.Hide();
+        }
+    }
+
     public void ClearScene()
     {
-        _currentObstacle?.Hide();
+        foreach (var obstacle in _spawnedObstacles)
+        {
+            obstacle.Hide();
+            Destroy(obstacle.gameObject);
+        }
+
+        _spawnedObstacles.Clear();
     }
 }

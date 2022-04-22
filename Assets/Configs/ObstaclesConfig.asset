@@ -15,3 +15,6 @@ MonoBehaviour:
   _obstacles:
   - {fileID: 7747650991556655183, guid: 8bca3071f1b95564391cf2c28ccbe03c, type: 3}
   - {fileID: 8433562036370501325, guid: 994a4208a946b474490cead90ac35f6c, type: 3}
+  - {fileID: 763351752384885060, guid: a66150fc1a381fd41bd6625421a8cb5c, type: 3}
+  - {fileID: 7390343909979171387, guid: 55a7cdc77c126a948a2d5a334e69664b, type: 3}
+  - {fileID: 993693188642746314, guid: 1c5abb7bfe6b9cc42b1570d70a17d6d6, type: 3}

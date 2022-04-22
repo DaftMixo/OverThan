@@ -9,32 +9,30 @@ public class SlidingPanel : Obstacle
     public override string Key { get; } = "SlidingPanel";
     
     [SerializeField] private float _scalingTime = 1f;
+    [SerializeField] private bool _rightStart;
 
     private Vector3 _rightPosition = Vector3.right * 3f;
-    private Vector3 _minimalScale = Vector3.zero;
-    private Vector3 _normalScale = Vector3.one;
     private bool _isShown;
 
 
     private void Start()
     {
-        //transform.localScale = _minimalScale;
-        //gameObject.SetActive(false);
-        MoveRight();
+        if(_rightStart)
+            MoveRight();
+        else
+            MoveLeft();
     }
 
     public override void Show()
     {
         gameObject.SetActive(true);
         _isShown = true;
-        //transform.DOScale(_normalScale, _scalingTime);
     }
 
     public override void Hide()
     {
         if (!_isShown)
             return;
-        //transform.DOScale(_minimalScale, _scalingTime).OnComplete(() => gameObject.SetActive(false));
         gameObject.SetActive(false);
         _isShown = false;
         

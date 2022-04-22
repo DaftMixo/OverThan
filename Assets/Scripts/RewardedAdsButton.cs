@@ -55,7 +55,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         // Then show the ad:
         Advertisement.Show(_adUnitId, this);
 
-        _showAdButton.onClick.RemoveListener(ShowAd);
+        _showAdButton.onClick.RemoveAllListeners();
     }
  
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:

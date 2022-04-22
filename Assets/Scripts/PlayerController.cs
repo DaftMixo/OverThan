@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UnlockCondition unlockCondition;
     [SerializeField] private string key;
     [SerializeField] private float jumpForce = 300f;
+    [SerializeField] private bool _rotate = true;
 
     private bool _isInteractable = false;
     private bool _jumpFlag;
@@ -79,6 +80,8 @@ public class PlayerController : MonoBehaviour
 
     private void Rotate()
     {
+        if (!_rotate) return;
+
         var randomRot = new Vector3(UnityEngine.Random.Range(-1f, 1f),
                                     UnityEngine.Random.Range(-1f, 1f),
                                     UnityEngine.Random.Range(-1f, 1f));
@@ -100,5 +103,21 @@ public class PlayerController : MonoBehaviour
             death.Invoke();
         }
         
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_isInteractable)
+            return;
+
+        if (collision.gameObject.CompareTag("TriggerZone"))
+        {
+            switchTriggerZone.Invoke();
+        }
+
+        if (collision.gameObject.CompareTag("DeathObject"))
+        {
+            death.Invoke();
+        }
     }
 }

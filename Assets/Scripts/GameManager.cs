@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
     private int _gameScore = 0;
 
     private List<Obstacle> _spawnedObstacles = new List<Obstacle>();
-    private Obstacle _activeObstacle;
 
     private void Awake()
     {
@@ -240,7 +239,8 @@ public class GameManager : MonoBehaviour
         bottomZone.SetActive(true);
         topZone.SetActive(true);
 
-        _activeObstacle?.Hide();
+
+        _obstaclesController.ClearScene();
     }
 
     public void ShowGallery()
@@ -278,10 +278,11 @@ public class GameManager : MonoBehaviour
     private void Death()
     {
         _gameState = GameState.Death;
-        _obstaclesController.ClearScene();
         _uiController.SetUI(_gameState);
         _uiController.SetDeathScreenScore(_gameScore);
         pausePosition = 0;
+
+        _obstaclesController.HideAll();
         
         if (_data.Score < _gameScore)
             _data.Score = _gameScore;
@@ -299,7 +300,6 @@ public class GameManager : MonoBehaviour
         _inputHandler.touched -= _playerController.Jump;
 
         _playerController.Interactable = false;
-        _activeObstacle?.Hide();
 
         _ads.LoadAd();
     }

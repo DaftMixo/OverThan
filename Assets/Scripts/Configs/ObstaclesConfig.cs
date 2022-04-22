@@ -6,8 +6,10 @@ using UnityEngine;
 public class ObstaclesConfig : ScriptableObject
 {
     [SerializeField] private Obstacle[] _obstacles;
+
     public Obstacle GetRandomObstacle()
     {
-        return _obstacles[Random.Range(0, _obstacles.Length)];
+        int v = Random.Range(0, _obstacles.Length);
+        return _obstacles[v];
     }
 }
