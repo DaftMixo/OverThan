@@ -14,8 +14,9 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     {
         //Disable button until ad is ready to show
         _showAdButton.interactable = false;
-        
-        
+        _showAdButton.onClick.AddListener(ShowAd);
+
+
         // Get the Ad Unit ID for the current platform:
         _adUnitId = null; // This will remain null for unsupported platforms
 #if UNITY_IOS
@@ -41,7 +42,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         if (adUnitId.Equals(_adUnitId))
         {
             // Configure the button to call the ShowAd() method when clicked:
-            _showAdButton.onClick.AddListener(ShowAd);
+            //_showAdButton.onClick.AddListener(ShowAd);
             // Enable the button for users to click:
             _showAdButton.interactable = true;
         }
@@ -54,8 +55,6 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         _showAdButton.interactable = false;
         // Then show the ad:
         Advertisement.Show(_adUnitId, this);
-
-        _showAdButton.onClick.RemoveAllListeners();
     }
  
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
