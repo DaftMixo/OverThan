@@ -1,4 +1,4 @@
-# OverThan
+# OverThan 🎮
 ## ScreenShots
 
 <p align="left">
@@ -14,6 +14,5 @@
 
 ## Links
 * [Google Drive](https://drive.google.com/file/d/1PoWD5rAlp1UhXYuYCge7HHSLeAI5orHb/view?usp=sharing)
-
-# Notice
-* Source in Develop branch
+***
+###### *Source in [Develop](https://github.com/Palvenok/OverThan/tree/Develop) branch
