@@ -1217,5 +1217,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9209701666734163319, guid: 402ad94a40523154fae9e6e8aab81b33, type: 3}
+      propertyPath: _testMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209701666734163319, guid: 402ad94a40523154fae9e6e8aab81b33, type: 3}
+      propertyPath: _iOSGameId
+      value: 4528958
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209701666734163319, guid: 402ad94a40523154fae9e6e8aab81b33, type: 3}
+      propertyPath: _androidGameId
+      value: 4528959
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 402ad94a40523154fae9e6e8aab81b33, type: 3}
