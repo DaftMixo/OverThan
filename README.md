@@ -13,7 +13,6 @@
 </p>
 
 ## Links
-* [Google Drive](https://drive.google.com/file/d/1PoWD5rAlp1UhXYuYCge7HHSLeAI5orHb/view?usp=sharing)
 * [Google Play](https://play.google.com/store/apps/details?id=com.JellyBrainGames.OverThan)
 ***
 ###### *Source in [Develop](https://github.com/Palvenok/OverThan/tree/Develop) branch
